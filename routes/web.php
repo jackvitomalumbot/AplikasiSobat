@@ -68,6 +68,9 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     // Export PDF
     Route::get('/mahasiswa/export-pdf', [AdminController::class, 'exportMahasiswaPdf'])->name('admin.mahasiswa.pdf');
     Route::get('/pengajar/export-pdf', [AdminController::class, 'exportPengajarPdf'])->name('admin.pengajar.pdf');
+
+    // Berikan Kelas Gratis
+    Route::post('/grant-free-class', [AdminController::class, 'grantFreeClass'])->name('admin.grant-free-class');
 });
 
 /* ─── Pengajar Routes ─── */

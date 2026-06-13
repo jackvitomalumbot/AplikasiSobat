@@ -38,8 +38,9 @@ class AdminController extends Controller
         }
 
         $mahasiswaList = $query->latest()->paginate(15);
+        $kelasList = Kelas::with('pengajar')->orderBy('nama_kelas')->get();
 
-        return view('admin.mahasiswa', compact('mahasiswaList'));
+        return view('admin.mahasiswa', compact('mahasiswaList', 'kelasList'));
     }
 
     public function pengajar(Request $request)
@@ -142,5 +143,44 @@ class AdminController extends Controller
         $pdf->setPaper('a4', 'landscape');
 
         return $pdf->download('Data_Pengajar_SobatMedis_' . now()->format('Ymd') . '.pdf');
+    }
+
+    /* ─── Berikan Kelas Gratis ─── */
+
+    public function grantFreeClass(Request $request)
+    {
+        $request->validate([
+            'mahasiswa_id' => 'required|exists:users,id',
+            'kelas_id' => 'required|exists:kelas,id',
+        ]);
+
+        $user = User::findOrFail($request->mahasiswa_id);
+        if ($user->role !== 'mahasiswa') {
+            return back()->with('error', 'User bukan mahasiswa.');
+        }
+
+        $existing = Enrollment::where('mahasiswa_id', $request->mahasiswa_id)
+            ->where('kelas_id', $request->kelas_id)
+            ->first();
+
+        if ($existing) {
+            if ($existing->payment_status === 'paid') {
+                return back()->with('error', 'Mahasiswa sudah terdaftar di kelas ini.');
+            }
+            $existing->update([
+                'payment_status' => 'paid',
+                'payment_id' => 'FREE-ADMIN-' . strtoupper(uniqid()),
+            ]);
+        } else {
+            Enrollment::create([
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'kelas_id' => $request->kelas_id,
+                'payment_status' => 'paid',
+                'payment_id' => 'FREE-ADMIN-' . strtoupper(uniqid()),
+            ]);
+        }
+
+        $kelas = Kelas::findOrFail($request->kelas_id);
+        return back()->with('success', "Kelas \"{$kelas->nama_kelas}\" berhasil diberikan gratis ke {$user->nama}.");
     }
 }

@@ -51,7 +51,11 @@
                 <td>{{ $mhs->mahasiswaDetail->universitas ?? '-' }}</td>
                 <td>{{ $mhs->created_at->format('d M Y') }}</td>
                 <td>
-                    <div class="d-flex gap-xs">
+                    <div class="d-flex gap-xs flex-wrap">
+                        <button class="btn btn-sm" style="background:var(--success);color:#fff;" onclick="openFreeClassModal({{ $mhs->id }}, '{{ addslashes($mhs->nama) }}')">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            Kelas Gratis
+                        </button>
                         <button class="btn btn-outline btn-sm" onclick="openPasswordModal({{ $mhs->id }}, '{{ addslashes($mhs->nama) }}')">
                             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                             Password
@@ -112,6 +116,44 @@
     </div>
 </div>
 
+{{-- Modal: Berikan Kelas Gratis --}}
+<div class="modal-overlay" id="modal-free-class">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Berikan Kelas Gratis</h3>
+            <button class="modal-close" aria-label="Close">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <form method="POST" action="{{ route('admin.grant-free-class') }}" id="form-free-class">
+            @csrf
+            <input type="hidden" name="mahasiswa_id" id="free-class-mahasiswa-id">
+            <div class="modal-body">
+                <div class="alert mb-md" style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:var(--radius-sm);background:var(--secondary-container);color:var(--on-secondary-container);">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Memberikan kelas gratis ke <strong id="free-class-user-name"></strong>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pilih Kelas <span class="required">✱</span></label>
+                    <select class="form-control" name="kelas_id" required>
+                        <option value="">— Pilih Kelas —</option>
+                        @foreach($kelasList as $kelas)
+                            <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }} — {{ $kelas->pengajar->nama ?? 'N/A' }} (Rp {{ number_format($kelas->harga, 0, ',', '.') }})</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-modal-close>Batal</button>
+                <button type="submit" class="btn btn-primary" style="background:var(--success);">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Berikan Gratis
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @push('scripts')
 <script>
 function openPasswordModal(userId, userName) {
@@ -121,6 +163,14 @@ function openPasswordModal(userId, userName) {
     modal.classList.add('active');
     modal.querySelector('input[name="new_password"]').value = '';
     modal.querySelector('input[name="new_password_confirmation"]').value = '';
+}
+
+function openFreeClassModal(userId, userName) {
+    document.getElementById('free-class-mahasiswa-id').value = userId;
+    document.getElementById('free-class-user-name').textContent = userName;
+    const modal = document.getElementById('modal-free-class');
+    modal.classList.add('active');
+    modal.querySelector('select[name="kelas_id"]').value = '';
 }
 </script>
 @endpush
