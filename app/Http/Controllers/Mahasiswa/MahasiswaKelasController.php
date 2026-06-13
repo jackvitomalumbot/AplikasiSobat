@@ -96,7 +96,10 @@ class MahasiswaKelasController extends Controller
         $enrolled = $user->enrollments()->where('kelas_id', $pertemuan->kelas_id)->where('payment_status', 'paid')->exists();
         if (!$enrolled) abort(403);
 
-        $path = $request->file('file')->store('submissions', 'public');
+        $file = $request->file('file');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads/submissions'), $filename);
+        $path = 'uploads/submissions/' . $filename;
 
         TugasSubmission::updateOrCreate(
             ['pertemuan_id' => $pertemuan->id, 'mahasiswa_id' => $user->id],

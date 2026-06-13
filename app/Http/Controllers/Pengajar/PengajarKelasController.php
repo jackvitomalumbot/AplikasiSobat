@@ -9,7 +9,7 @@ use App\Models\MateriFile;
 use App\Models\Pertemuan;
 use App\Models\TugasSubmission;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class PengajarKelasController extends Controller
 {
@@ -41,7 +41,10 @@ class PengajarKelasController extends Controller
         $data['pengajar_id'] = auth()->id();
 
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('kelas/thumbnails', 'public');
+            $file = $request->file('thumbnail');
+            $filename = 'kelas_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/thumbnails'), $filename);
+            $data['thumbnail'] = 'uploads/thumbnails/' . $filename;
         }
 
         Kelas::create($data);
@@ -77,8 +80,8 @@ class PengajarKelasController extends Controller
     {
         if ($kela->pengajar_id !== auth()->id()) abort(403);
 
-        if ($kela->thumbnail) {
-            Storage::disk('public')->delete($kela->thumbnail);
+        if ($kela->thumbnail && File::exists(public_path($kela->thumbnail))) {
+            File::delete(public_path($kela->thumbnail));
         }
 
         $kela->delete();
@@ -112,11 +115,12 @@ class PengajarKelasController extends Controller
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $path = $file->store('kelas/materi', 'public');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/materi'), $filename);
                 MateriFile::create([
                     'pertemuan_id' => $pertemuan->id,
                     'file_name' => $file->getClientOriginalName(),
-                    'file_path' => $path,
+                    'file_path' => 'uploads/materi/' . $filename,
                     'file_type' => $file->getClientOriginalExtension(),
                 ]);
             }
@@ -131,7 +135,9 @@ class PengajarKelasController extends Controller
         if ($kelas->pengajar_id !== auth()->id()) abort(403);
 
         foreach ($pertemuan->materiFiles as $file) {
-            Storage::disk('public')->delete($file->file_path);
+            if (File::exists(public_path($file->file_path))) {
+                File::delete(public_path($file->file_path));
+            }
         }
 
         $pertemuan->delete();
