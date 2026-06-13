@@ -37,7 +37,7 @@
 
         <div class="sidebar-footer">
             <div class="sidebar-user">
-                <img src="{{ auth()->user()->foto_profile ? asset('storage/' . auth()->user()->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar">
+                <img src="{{ auth()->user()->foto_profile ? asset(auth()->user()->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar">
                 <div class="sidebar-user-info">
                     <span class="sidebar-user-name">{{ auth()->user()->nama }}</span>
                     <span class="sidebar-user-role">Admin</span>

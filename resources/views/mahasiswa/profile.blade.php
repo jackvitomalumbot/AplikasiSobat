@@ -10,7 +10,7 @@
 <div class="card" style="max-width:600px;cursor:default;">
     <div class="card-body">
         <div class="text-center mb-xl">
-            <img src="{{ $user->foto_profile ? asset('storage/'.$user->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($user->nama).'&size=128&background=cce5ff&color=004b73' }}" alt="{{ $user->nama }}" class="avatar avatar-xl" style="margin:0 auto;">
+            <img src="{{ $user->foto_profile ? asset($user->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($user->nama).'&size=128&background=cce5ff&color=004b73' }}" alt="{{ $user->nama }}" class="avatar avatar-xl" style="margin:0 auto;">
             <h2 class="headline-md mt-md">{{ $user->nama }}</h2>
             <p class="text-muted">{{ $user->email }}</p>
             @if($user->mahasiswaDetail)

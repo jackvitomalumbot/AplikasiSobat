@@ -48,7 +48,7 @@
                 <td>{{ $pengajarList->firstItem() + $i }}</td>
                 <td>
                     <div class="d-flex align-center gap-sm">
-                        <img src="{{ $pgj->foto_profile ? asset('storage/' . $pgj->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($pgj->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
+                        <img src="{{ $pgj->foto_profile ? asset($pgj->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($pgj->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
                         {{ $pgj->nama }}
                     </div>
                 </td>

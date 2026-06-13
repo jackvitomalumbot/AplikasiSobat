@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class MahasiswaProfileController extends Controller
 {
@@ -28,10 +28,15 @@ class MahasiswaProfileController extends Controller
         $user->nama = $request->nama;
 
         if ($request->hasFile('foto_profile')) {
-            if ($user->foto_profile) {
-                Storage::disk('public')->delete($user->foto_profile);
+            // Delete old photo
+            if ($user->foto_profile && File::exists(public_path($user->foto_profile))) {
+                File::delete(public_path($user->foto_profile));
             }
-            $user->foto_profile = $request->file('foto_profile')->store('profiles', 'public');
+
+            $file = $request->file('foto_profile');
+            $filename = 'profile_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/profiles'), $filename);
+            $user->foto_profile = 'uploads/profiles/' . $filename;
         }
 
         if ($request->filled('new_password')) {

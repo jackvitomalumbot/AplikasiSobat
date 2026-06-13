@@ -146,7 +146,7 @@
                 <td>{{ $idx + 1 }}</td>
                 <td>
                     <div class="d-flex align-center gap-sm">
-                        <img src="{{ $h->mahasiswa->foto_profile ? asset('storage/'.$h->mahasiswa->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($h->mahasiswa->nama).'&size=32&background=cce5ff&color=004b73' }}" class="avatar" style="width:28px;height:28px;">
+                        <img src="{{ $h->mahasiswa->foto_profile ? asset($h->mahasiswa->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($h->mahasiswa->nama).'&size=32&background=cce5ff&color=004b73' }}" class="avatar" style="width:28px;height:28px;">
                         {{ $h->mahasiswa->nama }}
                     </div>
                 </td>

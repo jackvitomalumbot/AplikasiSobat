@@ -18,7 +18,7 @@
     @foreach($kelasList as $kelas)
     <a href="{{ url('/pengajar/kelas/' . $kelas->id) }}" class="card card-kelas" style="text-decoration:none;color:inherit;">
         @if($kelas->thumbnail)
-            <img src="{{ asset('storage/' . $kelas->thumbnail) }}" alt="{{ $kelas->nama_kelas }}" class="card-img-top">
+            <img src="{{ asset($kelas->thumbnail) }}" alt="{{ $kelas->nama_kelas }}" class="card-img-top">
         @else
             <div style="width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,var(--primary-fixed),var(--secondary-fixed));display:flex;align-items:center;justify-content:center;">
                 <svg width="48" height="48" fill="none" stroke="var(--on-primary-fixed-variant)" stroke-width="1.5" viewBox="0 0 24 24" opacity="0.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Pengajar;
 use App\Http\Controllers\Controller;
 use App\Models\PengajarDetail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class PengajarProfileController extends Controller
 {
@@ -27,10 +27,15 @@ class PengajarProfileController extends Controller
         $user = auth()->user();
 
         if ($request->hasFile('foto_profile')) {
-            if ($user->foto_profile) {
-                Storage::disk('public')->delete($user->foto_profile);
+            // Delete old photo
+            if ($user->foto_profile && File::exists(public_path($user->foto_profile))) {
+                File::delete(public_path($user->foto_profile));
             }
-            $user->foto_profile = $request->file('foto_profile')->store('profiles', 'public');
+
+            $file = $request->file('foto_profile');
+            $filename = 'profile_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/profiles'), $filename);
+            $user->foto_profile = 'uploads/profiles/' . $filename;
             $user->save();
         }
 

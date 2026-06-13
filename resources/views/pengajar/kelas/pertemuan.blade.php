@@ -51,7 +51,7 @@
             @if($pertemuan->materiFiles->count() > 0)
                 <div class="timeline-files">
                     @foreach($pertemuan->materiFiles as $file)
-                        <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="timeline-file">
+                        <a href="{{ asset($file->file_path) }}" target="_blank" class="timeline-file">
                             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                             {{ $file->file_name }}
                         </a>
@@ -100,7 +100,7 @@
                                     <td>{{ $idx + 1 }}</td>
                                     <td>
                                         <div class="d-flex align-center gap-xs">
-                                            <img src="{{ $mhs->foto_profile ? asset('storage/' . $mhs->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($mhs->nama) . '&size=32&background=cce5ff&color=004b73' }}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+                                            <img src="{{ $mhs->foto_profile ? asset($mhs->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($mhs->nama) . '&size=32&background=cce5ff&color=004b73' }}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
                                             {{ $mhs->nama }}
                                         </div>
                                     </td>
@@ -180,7 +180,7 @@
                                 </td>
                                 <td>
                                     @if($sub)
-                                        <a href="{{ asset('storage/' . $sub->file_path) }}" target="_blank" class="timeline-file" style="display:inline-flex;">
+                                        <a href="{{ asset($sub->file_path) }}" target="_blank" class="timeline-file" style="display:inline-flex;">
                                             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                             Download
                                         </a>

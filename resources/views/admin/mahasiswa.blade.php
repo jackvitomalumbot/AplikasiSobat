@@ -42,7 +42,7 @@
                 <td>{{ $mahasiswaList->firstItem() + $i }}</td>
                 <td>
                     <div class="d-flex align-center gap-sm">
-                        <img src="{{ $mhs->foto_profile ? asset('storage/' . $mhs->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($mhs->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
+                        <img src="{{ $mhs->foto_profile ? asset($mhs->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($mhs->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
                         {{ $mhs->nama }}
                     </div>
                 </td>

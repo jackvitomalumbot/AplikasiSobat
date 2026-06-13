@@ -41,7 +41,7 @@
         <div style="max-height:200px;overflow-y:auto;">
             @foreach($kelas->activeEnrollments as $enrollment)
             <div class="deadline-item">
-                <img src="{{ $enrollment->mahasiswa->foto_profile ? asset('storage/'.$enrollment->mahasiswa->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($enrollment->mahasiswa->nama).'&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:36px;height:36px;">
+                <img src="{{ $enrollment->mahasiswa->foto_profile ? asset($enrollment->mahasiswa->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($enrollment->mahasiswa->nama).'&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:36px;height:36px;">
                 <div class="deadline-content">
                     <div class="deadline-title">{{ $enrollment->mahasiswa->nama }}</div>
                     <div class="deadline-meta">{{ $enrollment->mahasiswa->email }}</div>
@@ -94,7 +94,7 @@
         @if($item->materiFiles->count())
             <div class="timeline-files">
                 @foreach($item->materiFiles as $file)
-                <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="timeline-file">
+                <a href="{{ asset($file->file_path) }}" target="_blank" class="timeline-file">
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     {{ $file->file_name }}
                 </a>

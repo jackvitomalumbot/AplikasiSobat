@@ -28,7 +28,7 @@
             @forelse($featuredPengajar ?? [] as $pengajar)
                 <div class="card card-pengajar">
                     <img 
-                        src="{{ $pengajar->foto_profile ? asset('storage/' . $pengajar->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($pengajar->nama) . '&size=192&background=cce5ff&color=004b73' }}" 
+                        src="{{ $pengajar->foto_profile ? asset($pengajar->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($pengajar->nama) . '&size=192&background=cce5ff&color=004b73' }}" 
                         alt="{{ $pengajar->nama }}" 
                         class="pengajar-avatar"
                     >
@@ -78,7 +78,7 @@
                     @forelse($allPengajar ?? [] as $pengajar)
                         <div class="card card-pengajar">
                             <img 
-                                src="{{ $pengajar->foto_profile ? asset('storage/' . $pengajar->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($pengajar->nama) . '&size=192&background=cce5ff&color=004b73' }}" 
+                                src="{{ $pengajar->foto_profile ? asset($pengajar->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($pengajar->nama) . '&size=192&background=cce5ff&color=004b73' }}" 
                                 alt="{{ $pengajar->nama }}" 
                                 class="pengajar-avatar"
                             >

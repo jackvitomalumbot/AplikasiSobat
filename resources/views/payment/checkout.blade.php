@@ -12,7 +12,7 @@
     <div style="flex:1;min-width:300px;">
         <div class="card" style="cursor:default;">
             @if($kelas->thumbnail)
-                <img src="{{ asset('storage/' . $kelas->thumbnail) }}" alt="{{ $kelas->nama_kelas }}" class="card-img-top">
+                <img src="{{ asset($kelas->thumbnail) }}" alt="{{ $kelas->nama_kelas }}" class="card-img-top">
             @else
                 <div style="width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,var(--primary-fixed),var(--secondary-fixed));display:flex;align-items:center;justify-content:center;">
                     <svg width="64" height="64" fill="none" stroke="var(--on-primary-fixed-variant)" stroke-width="1" viewBox="0 0 24 24" opacity="0.4"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
@@ -22,7 +22,7 @@
                 <h2 class="headline-md mb-sm">{{ $kelas->nama_kelas }}</h2>
                 <p class="body-sm text-muted mb-md">{{ $kelas->deskripsi }}</p>
                 <div class="d-flex align-center gap-sm">
-                    <img src="{{ $kelas->pengajar->foto_profile ? asset('storage/'.$kelas->pengajar->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($kelas->pengajar->nama).'&size=32&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
+                    <img src="{{ $kelas->pengajar->foto_profile ? asset($kelas->pengajar->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($kelas->pengajar->nama).'&size=32&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
                     <span class="body-sm">{{ $kelas->pengajar->nama }}</span>
                 </div>
             </div>

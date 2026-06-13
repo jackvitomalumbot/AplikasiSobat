@@ -12,7 +12,7 @@
         <h1 class="headline-lg">{{ $kelas->nama_kelas }}</h1>
         <p class="text-muted mt-sm">{{ $kelas->deskripsi }}</p>
         <div class="d-flex align-center gap-sm mt-md">
-            <img src="{{ $kelas->pengajar->foto_profile ? asset('storage/'.$kelas->pengajar->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($kelas->pengajar->nama).'&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:36px;height:36px;">
+            <img src="{{ $kelas->pengajar->foto_profile ? asset($kelas->pengajar->foto_profile) : 'https://ui-avatars.com/api/?name='.urlencode($kelas->pengajar->nama).'&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:36px;height:36px;">
             <div>
                 <div class="body-sm fw-600">{{ $kelas->pengajar->nama }}</div>
                 <div class="body-sm text-muted">Pengajar</div>
