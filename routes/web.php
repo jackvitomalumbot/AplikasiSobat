@@ -8,11 +8,13 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Pengajar\PengajarDashboardController;
 use App\Http\Controllers\Pengajar\PengajarKelasController;
 use App\Http\Controllers\Pengajar\PengajarProfileController;
+use App\Http\Controllers\Pengajar\PengajarKuisController;
 use App\Http\Controllers\Mahasiswa\MahasiswaDashboardController;
 use App\Http\Controllers\Mahasiswa\MahasiswaKelasController;
 use App\Http\Controllers\Mahasiswa\MahasiswaBeliController;
 use App\Http\Controllers\Mahasiswa\MahasiswaProfileController;
 use App\Http\Controllers\Mahasiswa\DeviceManagementController;
+use App\Http\Controllers\Mahasiswa\MahasiswaKuisController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -95,6 +97,14 @@ Route::prefix('pengajar')->middleware(['auth', 'role:pengajar'])->group(function
     // Export PDF Rekap Absensi
     Route::get('/kelas/{kela}/absensi-pdf', [PengajarKelasController::class, 'exportAbsensiPdf'])->name('pengajar.absensi.pdf');
 
+    // Kuis
+    Route::get('/kelas/{kela}/kuis/create', [PengajarKuisController::class, 'create'])->name('pengajar.kuis.create');
+    Route::post('/kelas/{kela}/kuis', [PengajarKuisController::class, 'store'])->name('pengajar.kuis.store');
+    Route::get('/kuis/{kui}', [PengajarKuisController::class, 'show'])->name('pengajar.kuis.show');
+    Route::post('/kuis/{kui}/nilai-essay', [PengajarKuisController::class, 'nilaiEssay'])->name('pengajar.kuis.nilai-essay');
+    Route::put('/kuis/{kui}/toggle', [PengajarKuisController::class, 'toggleActive'])->name('pengajar.kuis.toggle');
+    Route::delete('/kuis/{kui}', [PengajarKuisController::class, 'destroy'])->name('pengajar.kuis.destroy');
+
     // Profile
     Route::get('/profile', [PengajarProfileController::class, 'index'])->name('pengajar.profile');
     Route::put('/profile', [PengajarProfileController::class, 'update'])->name('pengajar.profile.update');
@@ -109,6 +119,11 @@ Route::prefix('mahasiswa')->middleware(['auth', 'role:mahasiswa', 'device.limit'
     Route::get('/kelas/{kela}', [MahasiswaKelasController::class, 'show'])->name('mahasiswa.kelas.show');
     Route::get('/pertemuan/{pertemuan}', [MahasiswaKelasController::class, 'showPertemuan'])->name('mahasiswa.pertemuan.show');
     Route::post('/tugas/{pertemuan}/submit', [MahasiswaKelasController::class, 'submitTugas'])->name('mahasiswa.tugas.submit');
+
+    // Kuis
+    Route::get('/kuis/{kui}', [MahasiswaKuisController::class, 'show'])->name('mahasiswa.kuis.show');
+    Route::post('/kuis/{kui}/submit', [MahasiswaKuisController::class, 'submit'])->name('mahasiswa.kuis.submit');
+    Route::get('/kuis/{kui}/hasil', [MahasiswaKuisController::class, 'hasil'])->name('mahasiswa.kuis.hasil');
 
     // Beli Kelas
     Route::get('/beli-kelas', [MahasiswaBeliController::class, 'index'])->name('mahasiswa.beli-kelas');

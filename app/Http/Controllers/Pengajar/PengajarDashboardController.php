@@ -22,6 +22,7 @@ class PengajarDashboardController extends Controller
 
         $totalPendapatan = Enrollment::whereIn('kelas_id', $kelasIds)
             ->where('payment_status', 'paid')
+            ->with('kelas')
             ->get()
             ->sum(fn($e) => $e->kelas->harga ?? 0);
 

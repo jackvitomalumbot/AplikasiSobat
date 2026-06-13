@@ -5,11 +5,11 @@
     <div class="d-flex align-center justify-between mb-lg flex-wrap gap-md">
         <div>
             <h1 class="headline-lg mb-xs">Perangkat Aktif</h1>
-            <p class="body-md text-muted">Anda dapat login maksimal di 2 perangkat secara bersamaan.</p>
+            <p class="body-md text-muted">Anda hanya dapat login di 1 perangkat saja.</p>
         </div>
         <div class="d-flex align-center gap-sm">
             <span class="badge badge-info" style="font-size:0.85rem;padding:6px 14px;">
-                <?php echo e($sessions->count()); ?> / 2 Perangkat
+                <?php echo e($sessions->count()); ?> / 1 Perangkat
             </span>
         </div>
     </div>
@@ -94,7 +94,7 @@
                 <span class="body-md fw-600">Informasi</span>
             </div>
             <ul class="body-sm text-muted" style="margin:0;padding-left:var(--space-lg);line-height:1.8;">
-                <li>Anda hanya dapat login secara bersamaan di maksimal <strong>2 perangkat</strong>.</li>
+                <li>Anda hanya dapat login di maksimal <strong>1 perangkat</strong>.</li>
                 <li>Jika ingin login di perangkat baru, silakan logout dari salah satu perangkat aktif.</li>
                 <li>Sesi yang tidak aktif selama <?php echo e(config('session.lifetime')); ?> menit akan otomatis berakhir.</li>
             </ul>

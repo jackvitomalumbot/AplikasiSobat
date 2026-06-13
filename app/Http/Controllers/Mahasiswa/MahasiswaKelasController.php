@@ -52,7 +52,10 @@ class MahasiswaKelasController extends Controller
             ->get()
             ->keyBy('pertemuan_id');
 
-        return view('mahasiswa.kelas.show', ['kelas' => $kela, 'submissions' => $submissions, 'absensiMap' => $absensiMap]);
+        // Kuis for this kelas
+        $kuisList = $kela->kuis()->where('is_active', true)->with(['soal', 'hasil'])->get();
+
+        return view('mahasiswa.kelas.show', ['kelas' => $kela, 'submissions' => $submissions, 'absensiMap' => $absensiMap, 'kuisList' => $kuisList]);
     }
 
     /* ─── Detail Pertemuan/Tugas ─── */

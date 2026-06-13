@@ -12,7 +12,7 @@ class DeviceLimitMiddleware
     /**
      * Maximum number of concurrent sessions allowed for mahasiswa.
      */
-    protected int $maxDevices = 2;
+    protected int $maxDevices = 1;
 
     /**
      * Handle an incoming request.

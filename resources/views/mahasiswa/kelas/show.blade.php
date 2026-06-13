@@ -79,4 +79,55 @@
     <p>Belum ada pertemuan untuk kelas ini.</p>
 </div>
 @endif
+
+{{-- Kuis Section --}}
+@if(isset($kuisList) && $kuisList->count())
+<h2 class="headline-md mb-lg mt-xl">Kuis</h2>
+<div class="d-flex gap-md flex-wrap">
+    @foreach($kuisList as $kuis)
+    @php
+        $hasilKuis = $kuis->hasil->where('mahasiswa_id', auth()->id())->first();
+        $isCompleted = $hasilKuis && $hasilKuis->isCompleted();
+    @endphp
+    <div class="card" style="flex:1; min-width:260px; max-width:380px; cursor:default; border-top:3px solid {{ $isCompleted ? 'var(--secondary)' : 'var(--primary)' }};">
+        <div class="card-body">
+            <div class="d-flex justify-between align-center mb-sm">
+                <h4 class="headline-sm" style="margin:0;">{{ $kuis->judul }}</h4>
+                @if($isCompleted)
+                    <span class="badge badge-success">Selesai</span>
+                @elseif($kuis->isExpired())
+                    <span class="badge badge-danger">Expired</span>
+                @else
+                    <span class="badge badge-primary">Tersedia</span>
+                @endif
+            </div>
+            @if($kuis->deskripsi)
+                <p class="body-sm text-muted mb-sm">{{ Str::limit($kuis->deskripsi, 60) }}</p>
+            @endif
+            <div class="d-flex gap-sm flex-wrap mb-sm">
+                <span class="badge badge-neutral">{{ $kuis->soal->count() }} soal</span>
+                <span class="badge badge-neutral">{{ $kuis->durasi_menit }} mnt</span>
+                @if($kuis->deadline)
+                    <span class="badge {{ $kuis->isExpired() ? 'badge-danger' : 'badge-warning' }}">{{ $kuis->deadline->format('d M H:i') }}</span>
+                @endif
+            </div>
+            @if($isCompleted)
+                @php $lulus = $hasilKuis->nilai >= 75; @endphp
+                <div class="body-sm mb-xs" style="color:{{ $lulus ? 'var(--secondary)' : 'var(--error)' }};">
+                    <strong>Nilai: {{ $hasilKuis->nilai }}</strong> · {{ $hasilKuis->total_benar }}/{{ $hasilKuis->max_poin }} benar
+                </div>
+                <div class="mb-sm">
+                    <span class="badge {{ $lulus ? 'badge-success' : 'badge-danger' }}">
+                        {{ $lulus ? '✅ Lulus KKM' : '❌ Tidak Lulus KKM' }}
+                    </span>
+                </div>
+                <a href="{{ route('mahasiswa.kuis.hasil', $kuis) }}" class="btn btn-outline btn-sm">Lihat Hasil</a>
+            @elseif(!$kuis->isExpired())
+                <a href="{{ route('mahasiswa.kuis.show', $kuis) }}" class="btn btn-primary btn-sm">Kerjakan Kuis</a>
+            @endif
+        </div>
+    </div>
+    @endforeach
+</div>
+@endif
 @endsection

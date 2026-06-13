@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\App\Http\Middleware\SecurityHeadersMiddleware::class);
         $middleware->append(\App\Http\Middleware\SanitizeInputMiddleware::class);
 
+        // Trust all proxies (DigitalOcean App Platform uses reverse proxy)
+        $middleware->trustProxies(at: '*');
+
         // Route middleware aliases
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,

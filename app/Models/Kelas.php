@@ -50,6 +50,11 @@ class Kelas extends Model
         return $this->enrollments()->where('payment_status', 'paid');
     }
 
+    public function kuis()
+    {
+        return $this->hasMany(Kuis::class)->latest();
+    }
+
     public function getFormattedHargaAttribute(): string
     {
         return 'Rp ' . number_format($this->harga, 0, ',', '.');

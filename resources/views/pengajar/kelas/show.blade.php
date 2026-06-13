@@ -20,6 +20,10 @@
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Download Rekap Absensi (PDF)
         </a>
+        <a href="{{ route('pengajar.kuis.create', $kelas) }}" class="btn btn-secondary">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
+            Buat Kuis
+        </a>
         <form method="POST" action="{{ url('/pengajar/kelas/' . $kelas->id) }}" style="display:inline;">
             @csrf @method('DELETE')
             <button type="submit" class="btn btn-danger" data-confirm="Hapus kelas {{ $kelas->nama_kelas }}? Semua data akan hilang.">Hapus Kelas</button>
@@ -119,6 +123,55 @@
     <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     <h3>Belum Ada Pertemuan</h3>
     <p>Tambahkan pertemuan atau tugas pertama untuk kelas ini.</p>
+</div>
+@endif
+
+{{-- Kuis Section --}}
+<h2 class="headline-md mb-lg mt-xl">Kuis</h2>
+
+@if($kelas->kuis->count())
+<div class="d-flex gap-md flex-wrap">
+    @foreach($kelas->kuis as $kuis)
+    <div class="card" style="flex:1; min-width:280px; max-width:400px; cursor:default; border-top:3px solid {{ $kuis->is_active ? 'var(--primary)' : 'var(--outline-variant)' }};">
+        <div class="card-body">
+            <div class="d-flex justify-between align-center mb-sm">
+                <h4 class="headline-sm" style="margin:0;">{{ $kuis->judul }}</h4>
+                <span class="badge {{ $kuis->is_active ? 'badge-success' : 'badge-neutral' }}">{{ $kuis->is_active ? 'Aktif' : 'Nonaktif' }}</span>
+            </div>
+            @if($kuis->deskripsi)
+                <p class="body-sm text-muted mb-sm">{{ Str::limit($kuis->deskripsi, 60) }}</p>
+            @endif
+            <div class="d-flex gap-sm flex-wrap mb-sm">
+                <span class="badge badge-primary">{{ $kuis->soal->count() }} soal</span>
+                <span class="badge badge-neutral">{{ $kuis->durasi_menit }} menit</span>
+                @php
+                    $pgCount = $kuis->soal->where('tipe', 'pilihan_ganda')->count();
+                    $essayCount = $kuis->soal->where('tipe', 'essay')->count();
+                @endphp
+                @if($pgCount) <span class="badge badge-primary" style="font-size:10px;">PG: {{ $pgCount }}</span> @endif
+                @if($essayCount) <span class="badge badge-warning" style="font-size:10px;">Essay: {{ $essayCount }}</span> @endif
+            </div>
+            @if($kuis->deadline)
+                <div class="body-xs text-muted mb-sm">Deadline: {{ $kuis->deadline->format('d M Y H:i') }}</div>
+            @endif
+            <div class="body-xs text-muted mb-md">Dikerjakan: {{ $kuis->hasil->where('waktu_selesai', '!=', null)->count() }}/{{ $kelas->activeEnrollments->count() }}</div>
+            <div class="d-flex gap-sm">
+                <a href="{{ route('pengajar.kuis.show', $kuis) }}" class="btn btn-outline btn-sm">Detail & Nilai</a>
+                <form method="POST" action="{{ route('pengajar.kuis.destroy', $kuis) }}" style="display:inline;">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="btn btn-ghost btn-sm" data-confirm="Hapus kuis {{ $kuis->judul }}?" style="color:var(--error);">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+@else
+<div class="empty-state">
+    <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
+    <h3>Belum Ada Kuis</h3>
+    <p>Buat kuis baru dengan soal pilihan ganda dan essay.</p>
+    <a href="{{ route('pengajar.kuis.create', $kelas) }}" class="btn btn-primary btn-sm">Buat Kuis</a>
 </div>
 @endif
 

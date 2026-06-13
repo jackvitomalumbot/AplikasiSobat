@@ -53,7 +53,7 @@ class PengajarKelasController extends Controller
     {
         if ($kela->pengajar_id !== auth()->id()) abort(403);
 
-        $kela->load(['pertemuan.materiFiles', 'pertemuan.absensi', 'pertemuan.tugasSubmissions', 'activeEnrollments.mahasiswa']);
+        $kela->load(['pertemuan.materiFiles', 'pertemuan.absensi', 'pertemuan.tugasSubmissions', 'activeEnrollments.mahasiswa', 'kuis.soal', 'kuis.hasil']);
 
         return view('pengajar.kelas.show', ['kelas' => $kela]);
     }
