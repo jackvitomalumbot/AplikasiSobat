@@ -16,7 +16,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ url('/admin/dashboard') }}" class="sidebar-brand">
-                @include('components.logo', ['size' => 28])
+                @include('components.logo', ['size' => 36])
                 <span>Admin Panel</span>
             </a>
         </div>

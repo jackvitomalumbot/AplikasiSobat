@@ -33,8 +33,12 @@ class PengajarProfileController extends Controller
             }
 
             $file = $request->file('foto_profile');
-            $filename = 'profile_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/profiles'), $filename);
+            $filename = 'profile_' . $user->id . '_' . time() . '.' . ($file->getClientOriginalExtension() ?: 'jpg');
+            $destPath = public_path('uploads/profiles');
+            if (!File::isDirectory($destPath)) {
+                File::makeDirectory($destPath, 0755, true);
+            }
+            $file->move($destPath, $filename);
             $user->foto_profile = 'uploads/profiles/' . $filename;
             $user->save();
         }
