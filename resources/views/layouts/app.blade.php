@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="@yield('meta_description', 'SobatMedis — Platform Pembelajaran Medis Online')">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Beranda') — SobatMedis</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +17,7 @@
     <header class="topnav" id="topnav">
         <div class="container d-flex justify-between align-center">
             <a href="{{ url('/') }}" class="topnav-brand">
-                <svg width="28" height="28" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <img src="{{ asset('images/logo.png') }}" alt="SobatMedis" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
                 <span>SobatMedis</span>
             </a>
             <nav class="topnav-links">

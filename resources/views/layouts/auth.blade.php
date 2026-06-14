@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Login') — SobatMedis</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +15,7 @@
     <div class="auth-container">
         <div class="auth-card animate-slide-up">
             <div class="auth-logo">
-                <svg width="48" height="48" viewBox="0 0 32 32" fill="none" style="margin: 0 auto 12px;">
-                    <rect width="32" height="32" rx="8" fill="#006194"/>
-                    <path d="M16 6L16 26M10 12H22M10 18H22" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-                </svg>
+                <img src="{{ asset('images/logo.png') }}" alt="SobatMedis" style="width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 12px;display:block;">
                 <h1>SobatMedis</h1>
                 <p>@yield('auth_subtitle', 'Platform Pembelajaran Medis')</p>
             </div>

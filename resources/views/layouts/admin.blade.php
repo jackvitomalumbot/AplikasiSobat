@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') — SobatMedis Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +16,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ url('/admin/dashboard') }}" class="sidebar-brand">
-                <svg width="24" height="24" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <img src="{{ asset('images/logo.png') }}" alt="SobatMedis" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
                 <span>Admin Panel</span>
             </a>
         </div>
