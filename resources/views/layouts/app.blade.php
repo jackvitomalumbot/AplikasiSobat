@@ -17,7 +17,7 @@
     <header class="topnav" id="topnav">
         <div class="container d-flex justify-between align-center">
             <a href="{{ url('/') }}" class="topnav-brand">
-                @include('components.logo', ['size' => 52])
+                @include('components.logo', ['size' => 56])
                 <span>SobatMedis</span>
             </a>
             <nav class="topnav-links">

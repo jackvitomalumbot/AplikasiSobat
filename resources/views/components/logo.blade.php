@@ -1,5 +1,5 @@
 {{-- SobatMedis Logo Component --}}
-@php $logoSize = $size ?? 36; @endphp
+@php $logoSize = $size ?? 40; @endphp
 <img
     src="{{ asset('images/logo.png') }}"
     alt="SobatMedis"
