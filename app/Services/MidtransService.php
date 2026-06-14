@@ -49,9 +49,9 @@ class MidtransService
 
         // Add callbacks
         $payload['callbacks'] = [
-            'finish' => url('/mahasiswa/beli-kelas') . '?payment=finish',
-            'error' => url('/mahasiswa/beli-kelas') . '?payment=error',
-            'pending' => url('/mahasiswa/beli-kelas') . '?payment=pending',
+            'finish' => url('/mahasiswa/transaksi') . '?payment=finish',
+            'error' => url('/mahasiswa/transaksi') . '?payment=error',
+            'pending' => url('/mahasiswa/transaksi') . '?payment=pending',
         ];
 
         $response = $this->postRequest('/snap/v1/transactions', $payload);

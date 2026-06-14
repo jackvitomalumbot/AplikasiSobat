@@ -15,6 +15,7 @@ use App\Http\Controllers\Mahasiswa\MahasiswaBeliController;
 use App\Http\Controllers\Mahasiswa\MahasiswaProfileController;
 use App\Http\Controllers\Mahasiswa\DeviceManagementController;
 use App\Http\Controllers\Mahasiswa\MahasiswaKuisController;
+use App\Http\Controllers\Mahasiswa\MahasiswaTransaksiController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -133,6 +134,9 @@ Route::prefix('mahasiswa')->middleware(['auth', 'role:mahasiswa', 'device.limit'
     Route::get('/beli-kelas/{kela}/checkout', [MahasiswaBeliController::class, 'checkout'])->name('mahasiswa.checkout');
     Route::post('/beli-kelas/{kela}/create-transaction', [MahasiswaBeliController::class, 'createTransaction'])->name('mahasiswa.create-transaction');
     Route::get('/beli-kelas/{kela}/finish', [MahasiswaBeliController::class, 'paymentFinish'])->name('mahasiswa.payment-finish');
+
+    // Riwayat Transaksi
+    Route::get('/transaksi', [MahasiswaTransaksiController::class, 'index'])->name('mahasiswa.transaksi');
 
     // Device Management
     Route::get('/devices', [DeviceManagementController::class, 'index'])->name('mahasiswa.devices');

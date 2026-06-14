@@ -49,6 +49,10 @@
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
                     Beli Kelas
                 </a>
+                <a href="{{ url('/mahasiswa/transaksi') }}" class="sidebar-link {{ request()->is('mahasiswa/transaksi*') ? 'active' : '' }}">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    Riwayat Transaksi
+                </a>
                 <a href="{{ url('/mahasiswa/profile') }}" class="sidebar-link {{ request()->is('mahasiswa/profile') ? 'active' : '' }}">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Profile
