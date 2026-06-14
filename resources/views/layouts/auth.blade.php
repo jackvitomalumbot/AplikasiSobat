@@ -15,7 +15,7 @@
     <div class="auth-container">
         <div class="auth-card animate-slide-up">
             <div class="auth-logo">
-                <img src="{{ asset('images/logo.png') }}" alt="SobatMedis" style="width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 12px;display:block;">
+                @include('components.logo', ['size' => 64])
                 <h1>SobatMedis</h1>
                 <p>@yield('auth_subtitle', 'Platform Pembelajaran Medis')</p>
             </div>

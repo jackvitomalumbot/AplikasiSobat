@@ -17,7 +17,7 @@
     <header class="topnav" id="topnav">
         <div class="container d-flex justify-between align-center">
             <a href="{{ url('/') }}" class="topnav-brand">
-                <img src="{{ asset('images/logo.png') }}" alt="SobatMedis" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+                @include('components.logo', ['size' => 32])
                 <span>SobatMedis</span>
             </a>
             <nav class="topnav-links">

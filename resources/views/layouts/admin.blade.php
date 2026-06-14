@@ -16,7 +16,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ url('/admin/dashboard') }}" class="sidebar-brand">
-                <img src="{{ asset('images/logo.png') }}" alt="SobatMedis" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+                @include('components.logo', ['size' => 28])
                 <span>Admin Panel</span>
             </a>
         </div>
