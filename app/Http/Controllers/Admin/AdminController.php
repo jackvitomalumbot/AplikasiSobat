@@ -210,6 +210,7 @@ class AdminController extends Controller
         $pendingCount = Enrollment::where('payment_status', 'pending')->count();
         $totalRevenue = Enrollment::where('payment_status', 'paid')
             ->whereHas('kelas')
+            ->with('kelas')
             ->get()
             ->sum(fn($e) => $e->kelas->harga ?? 0);
 
@@ -220,6 +221,7 @@ class AdminController extends Controller
 
     public function approvePayment(Enrollment $enrollment)
     {
+        $enrollment->load(['kelas', 'mahasiswa']);
         $enrollment->update([
             'payment_status' => 'paid',
             'paid_at' => now(),
@@ -230,6 +232,7 @@ class AdminController extends Controller
 
     public function rejectPayment(Enrollment $enrollment)
     {
+        $enrollment->load(['kelas', 'mahasiswa']);
         $enrollment->update([
             'payment_status' => 'failed',
         ]);

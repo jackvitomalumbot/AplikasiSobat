@@ -15,7 +15,7 @@
     <div class="auth-container">
         <div class="auth-card animate-slide-up">
             <div class="auth-logo" style="text-align:center;">
-                @include('components.logo', ['size' => 80])
+                @include('components.logo', ['size' => 90])
                 <h1>SobatMedis</h1>
                 <p>@yield('auth_subtitle', 'Platform Pembelajaran Medis')</p>
             </div>
