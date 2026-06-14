@@ -24,6 +24,13 @@ php artisan view:cache
 # Link storage
 php artisan storage:link --force 2>/dev/null || true
 
+# Ensure upload directories exist (ephemeral filesystem)
+echo "📁 Creating upload directories..."
+mkdir -p public/uploads/profiles
+mkdir -p public/uploads/thumbnails
+mkdir -p public/uploads/materi
+mkdir -p public/uploads/submissions
+
 echo "✅ Setup completed! Starting server..."
 
 # Start Apache (DigitalOcean App Platform uses heroku-php-apache2)

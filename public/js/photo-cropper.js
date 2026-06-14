@@ -1,6 +1,6 @@
 /**
  * SobatMedis Photo Cropper — Vanilla JS
- * Allows users to pan, zoom, and crop profile photos to a circular frame.
+ * Allows users to pan, zoom, and crop profile photos to a square frame.
  * Outputs a cropped 400x400 JPEG blob attached to the form.
  */
 (function () {
@@ -8,15 +8,12 @@
 
     class PhotoCropper {
         constructor(options) {
-            this.inputId = options.inputId;           // original file input id
-            this.formId = options.formId;             // form id to attach cropped file
-            this.previewImg = options.previewImg;     // avatar img element
-            this.cropSize = options.cropSize || 220;  // circle guide diameter
-            this.outputSize = options.outputSize || 400; // output px
+            this.inputId = options.inputId;
+            this.previewImg = options.previewImg;
+            this.cropSize = options.cropSize || 220;
+            this.outputSize = options.outputSize || 400;
 
             this.modal = null;
-            this.canvas = null;
-            this.ctx = null;
             this.img = null;
 
             // Transform state
@@ -30,6 +27,8 @@
             this.dragStartY = 0;
             this.lastOffsetX = 0;
             this.lastOffsetY = 0;
+            this.baseWidth = 0;
+            this.baseHeight = 0;
 
             this.init();
         }
@@ -37,10 +36,22 @@
         init() {
             this.buildModal();
             this.bindInput();
+            this.bindTrigger();
+        }
+
+        bindTrigger() {
+            // Make the avatar container clickable to open file dialog
+            const trigger = document.querySelector('[data-photo-cropper][data-input-id="' + this.inputId + '"]');
+            if (trigger) {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const input = document.getElementById(this.inputId);
+                    if (input) input.click();
+                });
+            }
         }
 
         buildModal() {
-            // Create overlay
             const overlay = document.createElement('div');
             overlay.className = 'cropper-modal-overlay';
             overlay.innerHTML = `
@@ -74,7 +85,6 @@
             document.body.appendChild(overlay);
             this.modal = overlay;
 
-            // References
             this.cropperImg = overlay.querySelector('.cropper-image');
             this.wrapper = overlay.querySelector('.cropper-container-wrapper');
             this.slider = overlay.querySelector('.cropper-zoom-slider');
@@ -86,7 +96,6 @@
             overlay.querySelector('.cropper-btn-save').addEventListener('click', () => this.save());
             overlay.addEventListener('click', (e) => { if (e.target === overlay) this.close(); });
 
-            // Zoom slider
             this.slider.addEventListener('input', (e) => {
                 this.scale = parseInt(e.target.value) / 100;
                 this.zoomLabel.textContent = e.target.value + '%';
@@ -134,9 +143,6 @@
             const img = new Image();
             img.onload = () => {
                 this.img = img;
-
-                const wrapW = this.wrapper.offsetWidth;
-                const wrapH = this.wrapper.offsetHeight;
 
                 // Fit image so smallest side fills crop circle
                 const imgRatio = img.width / img.height;
@@ -209,9 +215,6 @@
         close() {
             this.modal.classList.remove('active');
             document.body.style.overflow = '';
-            // Reset the file input
-            const input = document.getElementById(this.inputId);
-            if (input) input.value = '';
         }
 
         save() {
@@ -221,6 +224,10 @@
             canvas.width = this.outputSize;
             canvas.height = this.outputSize;
             const ctx = canvas.getContext('2d');
+
+            // Fill with white background (JPEG doesn't support transparency)
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, this.outputSize, this.outputSize);
 
             // Calculate crop area
             const wrapW = this.wrapper.offsetWidth;
@@ -242,22 +249,16 @@
             const sy = (circleY - imgScreenY) * scaleRatio;
             const sSize = this.cropSize * scaleRatio;
 
-            // Draw circular crop
-            ctx.beginPath();
-            ctx.arc(this.outputSize / 2, this.outputSize / 2, this.outputSize / 2, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.clip();
-
+            // Draw square crop (CSS border-radius handles circular display)
             ctx.drawImage(this.img, sx, sy, sSize, sSize, 0, 0, this.outputSize, this.outputSize);
 
             // Convert to blob and attach to form
             canvas.toBlob((blob) => {
                 if (!blob) return;
 
-                // Create a new File from blob
                 const croppedFile = new File([blob], 'profile_cropped.jpg', { type: 'image/jpeg' });
 
-                // Create a new DataTransfer to replace the file input value
+                // Replace file input
                 const dt = new DataTransfer();
                 dt.items.add(croppedFile);
                 const input = document.getElementById(this.inputId);
@@ -275,12 +276,11 @@
         }
     }
 
-    // Auto-init: look for elements with data-photo-cropper
+    // Auto-init
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-photo-cropper]').forEach(el => {
             new PhotoCropper({
                 inputId: el.dataset.inputId || 'foto_profile',
-                formId: el.dataset.formId || '',
                 previewImg: el.querySelector('.avatar'),
                 cropSize: parseInt(el.dataset.cropSize) || 220,
                 outputSize: parseInt(el.dataset.outputSize) || 400,

@@ -183,4 +183,36 @@ class AdminController extends Controller
         $kelas = Kelas::findOrFail($request->kelas_id);
         return back()->with('success', "Kelas \"{$kelas->nama_kelas}\" berhasil diberikan gratis ke {$user->nama}.");
     }
+
+    /* ─── Riwayat Transaksi ─── */
+
+    public function transaksi(Request $request)
+    {
+        $query = Enrollment::with(['mahasiswa', 'kelas.pengajar']);
+
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('payment_id', 'like', "%{$s}%")
+                  ->orWhereHas('mahasiswa', fn($q2) => $q2->where('nama', 'like', "%{$s}%")->orWhere('email', 'like', "%{$s}%"))
+                  ->orWhereHas('kelas', fn($q2) => $q2->where('nama_kelas', 'like', "%{$s}%"));
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('payment_status', $request->status);
+        }
+
+        $transactions = $query->latest()->paginate(20);
+
+        $totalTransactions = Enrollment::count();
+        $paidCount = Enrollment::where('payment_status', 'paid')->count();
+        $pendingCount = Enrollment::where('payment_status', 'pending')->count();
+        $totalRevenue = Enrollment::where('payment_status', 'paid')
+            ->whereHas('kelas')
+            ->get()
+            ->sum(fn($e) => $e->kelas->harga ?? 0);
+
+        return view('admin.transaksi', compact('transactions', 'totalTransactions', 'paidCount', 'pendingCount', 'totalRevenue'));
+    }
 }

@@ -72,6 +72,9 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 
     // Berikan Kelas Gratis
     Route::post('/grant-free-class', [AdminController::class, 'grantFreeClass'])->name('admin.grant-free-class');
+
+    // Riwayat Transaksi
+    Route::get('/transaksi', [AdminController::class, 'transaksi'])->name('admin.transaksi');
 });
 
 /* ─── Pengajar Routes ─── */
