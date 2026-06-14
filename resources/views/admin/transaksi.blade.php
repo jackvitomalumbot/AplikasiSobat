@@ -79,6 +79,7 @@
                 <th>Metode</th>
                 <th>ID Transaksi</th>
                 <th>Tanggal</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -124,10 +125,34 @@
                         {{ $trx->created_at->format('d M Y H:i') }}
                     @endif
                 </td>
+                <td>
+                    @if($trx->payment_status !== 'paid')
+                        <div class="d-flex gap-xs flex-wrap">
+                            <form method="POST" action="{{ route('admin.transaksi.approve', $trx->id) }}" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-sm" style="background:var(--success);color:#fff;" title="Setujui Pembayaran">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Approve
+                                </button>
+                            </form>
+                            @if($trx->payment_status !== 'failed')
+                            <form method="POST" action="{{ route('admin.transaksi.reject', $trx->id) }}" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-danger btn-sm" title="Tolak Pembayaran">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    Reject
+                                </button>
+                            </form>
+                            @endif
+                        </div>
+                    @else
+                        <span class="text-muted" style="font-size:12px;">✅ Lunas</span>
+                    @endif
+                </td>
             </tr>
             @empty
             <tr>
-                <td colspan="9" class="text-center text-muted" style="padding:var(--space-xl);">Belum ada transaksi.</td>
+                <td colspan="10" class="text-center text-muted" style="padding:var(--space-xl);">Belum ada transaksi.</td>
             </tr>
             @endforelse
         </tbody>

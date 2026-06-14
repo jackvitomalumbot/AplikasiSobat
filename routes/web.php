@@ -75,6 +75,8 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 
     // Riwayat Transaksi
     Route::get('/transaksi', [AdminController::class, 'transaksi'])->name('admin.transaksi');
+    Route::post('/transaksi/{enrollment}/approve', [AdminController::class, 'approvePayment'])->name('admin.transaksi.approve');
+    Route::post('/transaksi/{enrollment}/reject', [AdminController::class, 'rejectPayment'])->name('admin.transaksi.reject');
 });
 
 /* ─── Pengajar Routes ─── */

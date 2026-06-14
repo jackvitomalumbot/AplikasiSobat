@@ -16,7 +16,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ url('/') }}" class="sidebar-brand">
-                @include('components.logo', ['size' => 36])
+                @include('components.logo', ['size' => 42])
                 <span>SobatMedis</span>
             </a>
         </div>
@@ -91,7 +91,7 @@
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
             <a href="{{ url('/') }}" class="sidebar-brand" style="font-size: 16px;">
-                @include('components.logo', ['size' => 30])
+                @include('components.logo', ['size' => 36])
                 <span>SobatMedis</span>
             </a>
         </header>

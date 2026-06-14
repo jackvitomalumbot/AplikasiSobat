@@ -215,4 +215,25 @@ class AdminController extends Controller
 
         return view('admin.transaksi', compact('transactions', 'totalTransactions', 'paidCount', 'pendingCount', 'totalRevenue'));
     }
+
+    /* ─── Approve / Reject Pembayaran ─── */
+
+    public function approvePayment(Enrollment $enrollment)
+    {
+        $enrollment->update([
+            'payment_status' => 'paid',
+            'paid_at' => now(),
+        ]);
+
+        return back()->with('success', "Pembayaran untuk \"{$enrollment->kelas->nama_kelas}\" oleh {$enrollment->mahasiswa->nama} berhasil disetujui.");
+    }
+
+    public function rejectPayment(Enrollment $enrollment)
+    {
+        $enrollment->update([
+            'payment_status' => 'failed',
+        ]);
+
+        return back()->with('success', "Pembayaran untuk \"{$enrollment->kelas->nama_kelas}\" oleh {$enrollment->mahasiswa->nama} ditolak.");
+    }
 }
