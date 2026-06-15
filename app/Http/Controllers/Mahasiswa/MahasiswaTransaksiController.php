@@ -23,6 +23,7 @@ class MahasiswaTransaksiController extends Controller
         $totalSpent = Enrollment::where('mahasiswa_id', $user->id)
             ->where('payment_status', 'paid')
             ->whereHas('kelas')
+            ->with('kelas')
             ->get()
             ->sum(fn($e) => $e->kelas->harga ?? 0);
 
