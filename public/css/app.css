@@ -745,3 +745,240 @@ nav .pagination li.disabled span,
 .animate-on-scroll.visible { opacity: 1 !important; transform: translateY(0) !important; }
 
 @keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — HANYA TAMBAHAN, TIDAK UBAH APAPUN DI ATAS
+   ═══════════════════════════════════════════ */
+
+/* Cegah horizontal scroll di semua device */
+html, body { overflow-x: hidden; }
+
+/* ─── Tablet (≤1024px) ─── */
+@media (max-width: 1024px) {
+  .container { padding: 0 var(--space-md); }
+  .section { padding: var(--space-3xl) 0; }
+}
+
+/* ─── Mobile (≤768px) ─── */
+@media (max-width: 768px) {
+
+  /* --- Topnav --- */
+  .topnav { padding: var(--space-xs) 0; }
+  .topnav .container { gap: var(--space-sm); }
+  .topnav-brand { font-size: var(--font-size-base); }
+  .topnav-brand svg, .topnav-brand img { width: 36px; height: 36px; }
+  .topnav-links { gap: var(--space-sm); }
+  .topnav-links a { font-size: 12px; padding: var(--space-2xs) var(--space-xs); }
+  .topnav-actions .btn { font-size: 10px; padding: 4px 10px; }
+
+  /* --- Hero --- */
+  .hero { padding: var(--space-2xl) 0 var(--space-xl); }
+  .hero-title { font-size: 26px; line-height: 1.2; max-width: 100%; }
+  .hero-subtitle { font-size: var(--font-size-sm); max-width: 100%; }
+
+  /* --- Section --- */
+  .section { padding: var(--space-2xl) 0; }
+  .section-header { margin-bottom: var(--space-xl); }
+  .section-header h2 { font-size: var(--font-size-xl); }
+  .section-header p { font-size: var(--font-size-sm); }
+
+  /* --- Headline sizes --- */
+  .headline-lg { font-size: var(--font-size-xl); }
+  .headline-xl { font-size: var(--font-size-2xl); }
+
+  /* --- Sidebar: sudah ada rule transform di atas. Tambah overlay feel. --- */
+  .main-content { padding: var(--space-md); padding-bottom: var(--space-2xl); }
+
+  /* --- Mobile header sticky --- */
+  .mobile-header { position: sticky; top: 0; z-index: 50; }
+
+  /* --- Table scroll --- */
+  .table-wrapper { -webkit-overflow-scrolling: touch; }
+  .table { min-width: 500px; }
+
+  /* --- Stat grid 2 kolom --- */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+
+  /* --- Cards --- */
+  .card-body { padding: var(--space-md); }
+  .card-header { padding: var(--space-md); }
+  .card-footer { padding: var(--space-sm) var(--space-md); flex-wrap: wrap; gap: var(--space-sm); }
+
+  /* --- Alert margin --- */
+  .alert { margin-left: 0; margin-right: 0; }
+
+  /* --- Auth full width --- */
+  .auth-container { padding: var(--space-md); }
+  .auth-card { padding: var(--space-xl) var(--space-lg); }
+
+  /* --- Modal bottom sheet style --- */
+  .modal-overlay { padding: var(--space-sm); }
+  .modal { max-width: 100%; }
+  .modal-footer { flex-wrap: wrap; }
+  .modal-footer .btn { flex: 1; min-width: 100px; }
+
+  /* --- Carousel --- */
+  .carousel-btn { width: 36px; height: 36px; }
+  .carousel-track > * { min-width: 220px; }
+  .carousel-track { gap: var(--space-md); }
+
+  /* --- Pengajar card --- */
+  .pengajar-avatar { width: 72px; height: 72px; }
+  .card-pengajar { padding: var(--space-lg) var(--space-md); }
+
+  /* --- Pagination wrap --- */
+  nav .pagination, .pagination { flex-wrap: wrap; gap: 4px; }
+
+  /* --- Footer --- */
+  .footer { padding: var(--space-lg) 0; }
+  .footer p { font-size: var(--font-size-xs); }
+
+  /* --- Timeline compact --- */
+  .timeline { padding-left: var(--space-lg); }
+  .timeline-title { font-size: var(--font-size-sm); }
+
+  /* --- Deadline item --- */
+  .deadline-item { padding: var(--space-sm) var(--space-md); gap: var(--space-sm); }
+  .deadline-meta { font-size: 11px; word-break: break-word; }
+
+  /* --- Page header --- */
+  .page-header h1 { font-size: 20px; }
+
+  /* --- Search bar wrapping --- */
+  .search-bar form[style*="display:flex"] {
+    flex-wrap: wrap !important;
+  }
+
+  /* --- Flex helpers for mobile --- */
+  .d-flex.justify-between.align-center { flex-wrap: wrap; gap: var(--space-sm); }
+
+  /* --- Empty state --- */
+  .empty-state { padding: var(--space-2xl) var(--space-md); }
+}
+
+/* ─── Ponsel kecil (≤480px) ─── */
+@media (max-width: 480px) {
+
+  /* --- Container --- */
+  .container { padding: 0 var(--space-sm); }
+
+  /* --- Topnav: stack atau sembunyikan links jika terlalu sempit --- */
+  .topnav-links { display: none; }
+  .topnav-actions form[style*="display:inline"] { display: none !important; }
+  .topnav-actions .btn.btn-ghost { display: none; }
+
+  /* --- Hero sangat kecil --- */
+  .hero { padding: var(--space-xl) 0 var(--space-lg); }
+  .hero-title { font-size: 22px; margin-bottom: var(--space-md); }
+  .hero-subtitle { font-size: 13px; margin-bottom: var(--space-lg); }
+
+  /* --- CTA buttons stack --- */
+  .d-flex.gap-md.justify-center.flex-wrap {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm) !important;
+  }
+  .d-flex.gap-md.justify-center.flex-wrap .btn { width: 100%; }
+
+  /* --- Grid: semua 1 kolom --- */
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+  /* --- Headline --- */
+  .headline-md { font-size: 18px; }
+  .headline-lg { font-size: 20px; }
+  .headline-xl { font-size: 24px; }
+  .headline-sm { font-size: var(--font-size-base); }
+
+  /* --- Form: font ≥16px agar iOS tidak zoom --- */
+  .form-control { font-size: 16px; }
+  select.form-control { font-size: 16px; }
+  textarea.form-control { font-size: 16px; }
+
+  /* --- Search bar full width stack --- */
+  .search-bar form[style*="display:flex"] {
+    flex-direction: column !important;
+    gap: var(--space-sm) !important;
+  }
+  .search-bar .btn { width: 100%; }
+
+  /* --- Card footer stack --- */
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .card-footer .btn { width: 100%; text-align: center; justify-content: center; }
+
+  /* --- Stat card kecil --- */
+  .stat-card { padding: var(--space-md); }
+  .stat-value { font-size: var(--font-size-xl); }
+  .stat-icon { width: 40px; height: 40px; }
+  .stat-icon svg { width: 20px; height: 20px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+
+  /* --- Auth card full screen --- */
+  .auth-container { padding: 0; min-height: 100dvh; }
+  .auth-card {
+    max-width: 100%;
+    border-radius: 0;
+    border: none;
+    padding: var(--space-xl) var(--space-md);
+    min-height: 100dvh;
+  }
+  .auth-logo svg, .auth-logo img { max-width: 80px; }
+
+  /* --- Modal bottom sheet --- */
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 90vh;
+  }
+  .modal-footer { flex-direction: column; }
+  .modal-footer .btn { width: 100%; }
+
+  /* --- Sidebar brand smaller --- */
+  .sidebar-brand { font-size: var(--font-size-base); gap: var(--space-xs); }
+  .sidebar-brand svg, .sidebar-brand img { width: 36px; height: 36px; }
+
+  /* --- Page header --- */
+  .page-header h1 { font-size: 18px; }
+  .page-header p { font-size: var(--font-size-xs); }
+  .page-header { margin-bottom: var(--space-lg); }
+
+  /* --- Main content padding --- */
+  .main-content { padding: var(--space-sm); padding-bottom: var(--space-xl); }
+
+  /* --- Mobile header compact --- */
+  .mobile-header {
+    margin: calc(-1 * var(--space-sm)) calc(-1 * var(--space-sm)) var(--space-md);
+    padding: var(--space-sm);
+  }
+
+  /* --- Flex helper: stack di mobile kecil --- */
+  .d-flex.justify-between { flex-wrap: wrap; gap: var(--space-sm); }
+  .d-flex.align-center.gap-md { flex-wrap: wrap; gap: var(--space-xs); }
+
+  /* --- Carousel --- */
+  .carousel-track > * { min-width: 200px; }
+  .carousel-section { gap: var(--space-xs); }
+  .carousel-btn { width: 32px; height: 32px; }
+
+  /* --- Progress bar label --- */
+  .progress-label { font-size: 10px; }
+
+  /* --- Badge --- */
+  .badge { font-size: 9px; padding: 2px 8px; }
+
+  /* --- Avatar kecil di sidebar user --- */
+  .sidebar-user .avatar { width: 32px; height: 32px; }
+}
+
+/* ─── Ponsel sangat kecil (≤360px) ─── */
+@media (max-width: 360px) {
+  .hero-title { font-size: 20px; }
+  .hero-subtitle { font-size: 12px; }
+  .btn { font-size: 10px; padding: 8px 14px; }
+  .btn-lg { padding: 10px 18px; font-size: 11px; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .topnav-brand span { display: none; }
+  .sidebar-brand span { font-size: var(--font-size-sm); }
+}
