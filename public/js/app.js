@@ -29,66 +29,19 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ─── Sidebar Toggle (Mobile) ─── */
   var sidebarToggle = document.getElementById('sidebar-toggle');
   var sidebar = document.getElementById('sidebar');
-  var sidebarOverlay = document.getElementById('sidebar-overlay');
-
-  function openSidebar() {
-    if (sidebar) sidebar.classList.add('open');
-    if (sidebarOverlay) sidebarOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeSidebar() {
-    if (sidebar) sidebar.classList.remove('open');
-    if (sidebarOverlay) sidebarOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
 
   if (sidebarToggle && sidebar) {
     sidebarToggle.addEventListener('click', function () {
-      if (sidebar.classList.contains('open')) { closeSidebar(); } else { openSidebar(); }
+      sidebar.classList.toggle('open');
     });
 
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function (e) {
       if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
-        closeSidebar();
+        sidebar.classList.remove('open');
       }
     });
   }
-
-  // Overlay click menutup sidebar
-  if (sidebarOverlay) {
-    sidebarOverlay.addEventListener('click', closeSidebar);
-  }
-
-  /* ─── Top Nav Hamburger (halaman publik) ─── */
-  var topHamburger = document.getElementById('topnav-hamburger');
-  var mobileDrawer = document.getElementById('mobile-nav-drawer');
-
-  if (topHamburger && mobileDrawer) {
-    topHamburger.addEventListener('click', function () {
-      var isOpen = mobileDrawer.classList.contains('open');
-      mobileDrawer.classList.toggle('open');
-      topHamburger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-      topHamburger.innerHTML = isOpen
-        ? '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>'
-        : '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-    });
-    document.addEventListener('click', function (e) {
-      if (mobileDrawer.classList.contains('open') && !mobileDrawer.contains(e.target) && !topHamburger.contains(e.target)) {
-        mobileDrawer.classList.remove('open');
-        topHamburger.setAttribute('aria-expanded', 'false');
-        topHamburger.innerHTML = '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
-      }
-    });
-  }
-
-  // Escape key menutup semua
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      closeSidebar();
-      if (mobileDrawer) mobileDrawer.classList.remove('open');
-    }
-  });
 
   /* ─── Modal ─── */
   document.querySelectorAll('[data-modal-target]').forEach(function (trigger) {

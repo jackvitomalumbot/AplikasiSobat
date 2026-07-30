@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="has-sidebar">
-    {{-- Overlay sidebar (mobile) --}}
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
     {{-- Sidebar --}}
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -116,48 +113,6 @@
 
         @yield('content')
     </div>
-
-    {{-- Mobile Bottom Navigation --}}
-    <nav class="bottom-nav" id="bottom-nav">
-        <div class="bottom-nav-inner">
-            @php $roleNav = auth()->user()->role; @endphp
-            @if($roleNav === 'pengajar')
-                <a href="{{ url('/pengajar/dashboard') }}" class="bottom-nav-item {{ request()->is('pengajar/dashboard') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                    Home
-                </a>
-                <a href="{{ url('/pengajar/kelas') }}" class="bottom-nav-item {{ request()->is('pengajar/kelas*') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-                    Kelas
-                </a>
-                <a href="{{ url('/pengajar/profile') }}" class="bottom-nav-item {{ request()->is('pengajar/profile') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Profil
-                </a>
-            @elseif($roleNav === 'mahasiswa')
-                <a href="{{ url('/mahasiswa/dashboard') }}" class="bottom-nav-item {{ request()->is('mahasiswa/dashboard') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                    Home
-                </a>
-                <a href="{{ url('/mahasiswa/kelas') }}" class="bottom-nav-item {{ request()->is('mahasiswa/kelas*') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-                    Kelas
-                </a>
-                <a href="{{ url('/mahasiswa/beli-kelas') }}" class="bottom-nav-item {{ request()->is('mahasiswa/beli-kelas*') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
-                    Beli
-                </a>
-                <a href="{{ url('/mahasiswa/transaksi') }}" class="bottom-nav-item {{ request()->is('mahasiswa/transaksi*') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    Transaksi
-                </a>
-                <a href="{{ url('/mahasiswa/profile') }}" class="bottom-nav-item {{ request()->is('mahasiswa/profile') ? 'active' : '' }}">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Profil
-                </a>
-            @endif
-        </div>
-    </nav>
 
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('scripts')

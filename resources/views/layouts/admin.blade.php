@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="has-sidebar">
-    {{-- Overlay sidebar (mobile) --}}
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
     {{-- Sidebar --}}
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -86,28 +83,6 @@
 
         @yield('content')
     </div>
-
-    {{-- Mobile Bottom Navigation (Admin) --}}
-    <nav class="bottom-nav" id="bottom-nav">
-        <div class="bottom-nav-inner">
-            <a href="{{ url('/admin/dashboard') }}" class="bottom-nav-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                Home
-            </a>
-            <a href="{{ url('/admin/mahasiswa') }}" class="bottom-nav-item {{ request()->is('admin/mahasiswa') ? 'active' : '' }}">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>
-                Mahasiswa
-            </a>
-            <a href="{{ url('/admin/pengajar') }}" class="bottom-nav-item {{ request()->is('admin/pengajar') ? 'active' : '' }}">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Pengajar
-            </a>
-            <a href="{{ url('/admin/transaksi') }}" class="bottom-nav-item {{ request()->is('admin/transaksi') ? 'active' : '' }}">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                Transaksi
-            </a>
-        </div>
-    </nav>
 
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('scripts')
