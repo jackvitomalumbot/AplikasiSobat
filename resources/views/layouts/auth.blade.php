@@ -2,10 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#fcf9f4">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Login') — SobatMedis</title>
@@ -18,7 +15,7 @@
     <div class="auth-container">
         <div class="auth-card animate-slide-up">
             <div class="auth-logo" style="text-align:center;">
-                @include('components.logo', ['size' => 80])
+                @include('components.logo', ['size' => 100])
                 <h1>SobatMedis</h1>
                 <p>@yield('auth_subtitle', 'Platform Pembelajaran Medis')</p>
             </div>
@@ -34,14 +31,6 @@
                 <div class="alert alert-error mb-lg">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                     {{ session('error') }}
-                </div>
-            @endif
-
-            @if($errors->any())
-                <div class="alert alert-error mb-lg">
-                    @foreach($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
                 </div>
             @endif
 
