@@ -2,8 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="@yield('meta_description', 'SobatMedis — Platform Pembelajaran Medis Online')">
+    <meta name="theme-color" content="#fcf9f4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Beranda') — SobatMedis</title>
@@ -15,9 +18,9 @@
 <body>
     {{-- Top Navigation --}}
     <header class="topnav" id="topnav">
-        <div class="container d-flex justify-between align-center">
+        <div class="container">
             <a href="{{ url('/') }}" class="topnav-brand">
-                @include('components.logo', ['size' => 56])
+                @include('components.logo', ['size' => 40])
                 <span>SobatMedis</span>
             </a>
             <nav class="topnav-links">
@@ -27,17 +30,40 @@
             <div class="topnav-actions">
                 @auth
                     @php $role = auth()->user()->role; @endphp
-                    <a href="{{ url("/{$role}/dashboard") }}" class="btn btn-ghost btn-sm">{{ auth()->user()->nama }}</a>
-                    <form method="POST" action="{{ url('/logout') }}" style="display:inline;">
+                    <a href="{{ url("/{$role}/dashboard") }}" class="btn btn-ghost btn-sm hidden-mobile">{{ auth()->user()->nama }}</a>
+                    <form method="POST" action="{{ url('/logout') }}" style="display:inline;" class="hidden-mobile">
                         @csrf
                         <button type="submit" class="btn btn-outline btn-sm">Logout</button>
                     </form>
                 @else
-                    <a href="{{ url('/login') }}" class="btn btn-primary btn-sm" id="btn-login">Login</a>
+                    <a href="{{ url('/login') }}" class="btn btn-primary btn-sm hidden-mobile" id="btn-login">Login</a>
                 @endauth
+                {{-- Hamburger for mobile --}}
+                <button class="topnav-hamburger" id="topnav-hamburger" aria-label="Menu" aria-expanded="false">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
             </div>
         </div>
     </header>
+
+    {{-- Mobile Nav Drawer --}}
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer" role="navigation" aria-label="Mobile menu">
+        <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Dashboard</a>
+        <a href="{{ url('/bantuan') }}" class="{{ request()->is('bantuan') ? 'active' : '' }}">Pusat Bantuan</a>
+        <div class="mobile-nav-actions">
+            @auth
+                @php $role = auth()->user()->role; @endphp
+                <a href="{{ url("/{$role}/dashboard") }}" class="btn btn-ghost btn-sm btn-block">{{ auth()->user()->nama }}</a>
+                <form method="POST" action="{{ url('/logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-outline btn-sm btn-block">Logout</button>
+                </form>
+            @else
+                <a href="{{ url('/login') }}" class="btn btn-primary btn-sm btn-block">Login</a>
+                <a href="{{ url('/register') }}" class="btn btn-outline btn-sm btn-block">Daftar</a>
+            @endauth
+        </div>
+    </div>
 
     {{-- Flash Messages --}}
     @if(session('success'))

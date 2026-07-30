@@ -2,7 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#fcf9f4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') — SobatMedis</title>
@@ -12,6 +15,10 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="has-sidebar">
+
+    {{-- Sidebar Overlay (mobile) --}}
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     {{-- Sidebar --}}
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -91,28 +98,77 @@
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
             <a href="{{ url('/') }}" class="sidebar-brand" style="font-size: 16px;">
-                @include('components.logo', ['size' => 44])
+                @include('components.logo', ['size' => 36])
                 <span>SobatMedis</span>
             </a>
+            {{-- User avatar on mobile header --}}
+            <div style="margin-left: auto;">
+                <img src="{{ auth()->user()->foto_profile ? asset(auth()->user()->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
+            </div>
         </header>
 
-        {{-- Flash Messages --}}
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-error">{{ session('error') }}</div>
-        @endif
-        @if($errors->any())
-            <div class="alert alert-error">
-                @foreach($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
-            </div>
-        @endif
+        {{-- Content wrapper with padding for mobile --}}
+        <div class="content-wrapper" style="padding: var(--space-xl);">
+            {{-- Flash Messages --}}
+            @if(session('success'))
+                <div class="alert alert-success" style="margin-left:0;margin-right:0;">{{ session('success') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-error" style="margin-left:0;margin-right:0;">{{ session('error') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="alert alert-error" style="margin-left:0;margin-right:0;">
+                    @foreach($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
 
-        @yield('content')
+            @yield('content')
+        </div>
     </div>
+
+    {{-- Mobile Bottom Navigation --}}
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation">
+        <div class="bottom-nav-inner">
+            @php $role = auth()->user()->role; @endphp
+            @if($role === 'pengajar')
+                <a href="{{ url('/pengajar/dashboard') }}" class="bottom-nav-item {{ request()->is('pengajar/dashboard') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Home
+                </a>
+                <a href="{{ url('/pengajar/kelas') }}" class="bottom-nav-item {{ request()->is('pengajar/kelas*') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    Kelas
+                </a>
+                <a href="{{ url('/pengajar/profile') }}" class="bottom-nav-item {{ request()->is('pengajar/profile') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Profil
+                </a>
+            @elseif($role === 'mahasiswa')
+                <a href="{{ url('/mahasiswa/dashboard') }}" class="bottom-nav-item {{ request()->is('mahasiswa/dashboard') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Home
+                </a>
+                <a href="{{ url('/mahasiswa/kelas') }}" class="bottom-nav-item {{ request()->is('mahasiswa/kelas*') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    Kelas
+                </a>
+                <a href="{{ url('/mahasiswa/beli-kelas') }}" class="bottom-nav-item {{ request()->is('mahasiswa/beli-kelas*') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                    Beli
+                </a>
+                <a href="{{ url('/mahasiswa/transaksi') }}" class="bottom-nav-item {{ request()->is('mahasiswa/transaksi*') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    Transaksi
+                </a>
+                <a href="{{ url('/mahasiswa/profile') }}" class="bottom-nav-item {{ request()->is('mahasiswa/profile') ? 'active' : '' }}">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Profil
+                </a>
+            @endif
+        </div>
+    </nav>
 
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('scripts')

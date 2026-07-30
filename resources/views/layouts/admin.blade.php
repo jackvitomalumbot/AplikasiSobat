@@ -2,7 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#fcf9f4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') — SobatMedis Admin</title>
@@ -12,6 +15,10 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="has-sidebar">
+
+    {{-- Sidebar Overlay (mobile) --}}
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     {{-- Sidebar --}}
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -60,29 +67,61 @@
 
     {{-- Main Content --}}
     <div class="main-content">
+        {{-- Mobile Header --}}
         <header class="mobile-header" id="mobile-header">
             <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
-            <span class="sidebar-brand" style="font-size: 16px;">Admin Panel</span>
+            <span class="sidebar-brand" style="font-size: 15px; text-decoration:none;">
+                @include('components.logo', ['size' => 36])
+                Admin Panel
+            </span>
+            <div style="margin-left: auto;">
+                <img src="{{ auth()->user()->foto_profile ? asset(auth()->user()->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=40&background=cce5ff&color=004b73' }}" alt="" class="avatar" style="width:32px;height:32px;">
+            </div>
         </header>
 
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-error">{{ session('error') }}</div>
-        @endif
-        @if($errors->any())
-            <div class="alert alert-error">
-                @foreach($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
-            </div>
-        @endif
+        {{-- Content Wrapper --}}
+        <div class="content-wrapper" style="padding: var(--space-xl);">
+            @if(session('success'))
+                <div class="alert alert-success" style="margin-left:0;margin-right:0;">{{ session('success') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-error" style="margin-left:0;margin-right:0;">{{ session('error') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="alert alert-error" style="margin-left:0;margin-right:0;">
+                    @foreach($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
 
-        @yield('content')
+            @yield('content')
+        </div>
     </div>
+
+    {{-- Mobile Bottom Navigation (Admin) --}}
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Admin navigation">
+        <div class="bottom-nav-inner">
+            <a href="{{ url('/admin/dashboard') }}" class="bottom-nav-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                Home
+            </a>
+            <a href="{{ url('/admin/mahasiswa') }}" class="bottom-nav-item {{ request()->is('admin/mahasiswa') ? 'active' : '' }}">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>
+                Mahasiswa
+            </a>
+            <a href="{{ url('/admin/pengajar') }}" class="bottom-nav-item {{ request()->is('admin/pengajar') ? 'active' : '' }}">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Pengajar
+            </a>
+            <a href="{{ url('/admin/transaksi') }}" class="bottom-nav-item {{ request()->is('admin/transaksi') ? 'active' : '' }}">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                Transaksi
+            </a>
+        </div>
+    </nav>
 
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('scripts')
