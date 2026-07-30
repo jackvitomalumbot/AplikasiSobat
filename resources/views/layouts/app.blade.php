@@ -35,9 +35,33 @@
                 @else
                     <a href="{{ url('/login') }}" class="btn btn-primary btn-sm" id="btn-login">Login</a>
                 @endauth
+                {{-- Tombol hamburger: hanya muncul di mobile --}}
+                <button class="topnav-hamburger" id="topnav-hamburger" aria-label="Buka menu" aria-expanded="false">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
             </div>
         </div>
     </header>
+
+    {{-- Mobile Nav Drawer (hanya tampil di mobile) --}}
+    <nav class="mobile-nav-drawer" id="mobile-nav-drawer">
+        <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Dashboard</a>
+        <a href="{{ url('/bantuan') }}" class="{{ request()->is('bantuan') ? 'active' : '' }}">Pusat Bantuan</a>
+        <div class="drawer-divider"></div>
+        <div class="drawer-actions">
+            @auth
+                @php $role = auth()->user()->role; @endphp
+                <a href="{{ url("/{$role}/dashboard") }}" class="btn btn-ghost btn-sm btn-block">{{ auth()->user()->nama }}</a>
+                <form method="POST" action="{{ url('/logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-outline btn-sm btn-block">Logout</button>
+                </form>
+            @else
+                <a href="{{ url('/login') }}" class="btn btn-primary btn-sm btn-block">Login</a>
+                <a href="{{ url('/register') }}" class="btn btn-outline btn-sm btn-block">Daftar</a>
+            @endauth
+        </div>
+    </nav>
 
     {{-- Flash Messages --}}
     @if(session('success'))
