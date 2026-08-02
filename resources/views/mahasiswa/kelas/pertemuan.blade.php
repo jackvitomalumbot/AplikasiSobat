@@ -115,18 +115,40 @@
             </svg>
             Video Materi
         </h3>
+
+        {{-- Wrapper: posisi relative agar overlay bisa diletakkan di atas iframe --}}
         <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:#000;">
+
+            {{-- Iframe embed pakai youtube-nocookie.com + parameter untuk menyembunyikan branding --}}
             <iframe
-                src="https://www.youtube.com/embed/{{ $pertemuan->youtubeEmbedId }}?rel=0&modestbranding=1"
+                src="https://www.youtube-nocookie.com/embed/{{ $pertemuan->youtubeEmbedId }}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&color=white&disablekb=0&fs=1"
                 width="100%" height="100%"
                 frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 style="display:block; position:absolute; top:0; left:0; width:100%; height:100%;">
             </iframe>
+
+            {{-- Overlay atas: menutup area judul & logo YouTube (klik tidak bisa tembus ke YouTube) --}}
+            <div style="
+                position:absolute; top:0; left:0; right:0;
+                height: 15%;
+                z-index: 10;
+                cursor: default;
+            "></div>
+
+            {{-- Overlay kanan-bawah: menutup watermark logo YouTube --}}
+            <div style="
+                position:absolute; bottom:40px; right:0;
+                width: 20%; height: 15%;
+                z-index: 10;
+                cursor: default;
+            "></div>
+
         </div>
     </div>
 </div>
 @endif
+
 
 {{-- File Materi --}}
 @if($pertemuan->materiFiles->count() > 0)
