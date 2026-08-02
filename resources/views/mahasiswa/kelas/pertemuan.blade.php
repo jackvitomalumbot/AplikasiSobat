@@ -105,6 +105,35 @@
     </div>
 </div>
 
+{{-- YouTube Video Embed --}}
+@if($pertemuan->youtubeEmbedId)
+<div class="card" style="margin-bottom: var(--space-xl);">
+    <div class="card-body">
+        <h3 class="headline-sm mb-md">
+            <svg width="20" height="20" fill="red" viewBox="0 0 24 24" style="vertical-align:middle; margin-right:6px;">
+                <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            Video Materi
+        </h3>
+        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:#000;">
+            <iframe
+                src="https://www.youtube.com/embed/{{ $pertemuan->youtubeEmbedId }}"
+                width="100%" height="100%"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                style="display:block; position:absolute; top:0; left:0; width:100%; height:100%;">
+            </iframe>
+        </div>
+        <p class="body-sm text-muted mt-sm">
+            <a href="{{ $pertemuan->youtube_url }}" target="_blank" style="color:var(--primary);">
+                Buka di YouTube ↗
+            </a>
+        </p>
+    </div>
+</div>
+@endif
+
 {{-- File Materi --}}
 @if($pertemuan->materiFiles->count() > 0)
 <div class="card" style="margin-bottom: var(--space-xl);">

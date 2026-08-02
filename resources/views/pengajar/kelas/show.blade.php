@@ -206,6 +206,21 @@
                     <label class="form-label">Deskripsi</label>
                     <textarea class="form-control" name="deskripsi" placeholder="Deskripsi singkat..." style="min-height:80px;"></textarea>
                 </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <svg width="16" height="16" fill="red" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        Link Video YouTube <span class="form-text" style="font-weight:400;">(Opsional)</span>
+                    </label>
+                    <input type="url" class="form-control" name="youtube_url" id="youtube-url-input"
+                        placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..."
+                        oninput="previewYoutubeEmbed(this.value)">
+                    <span class="form-text">Jika diisi, video akan otomatis ter-embed dan dapat ditonton mahasiswa.</span>
+                    <div id="youtube-preview" style="display:none; margin-top:10px; border-radius:8px; overflow:hidden; background:#000; aspect-ratio:16/9;">
+                        <iframe id="youtube-iframe" width="100%" height="100%" src="" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen style="display:block;"></iframe>
+                    </div>
+                </div>
                 <div id="tugas-fields" style="display:none;">
                     <div class="form-group">
                         <label class="form-label">Deadline</label>
@@ -235,6 +250,30 @@
 document.getElementById('pertemuan-tipe').addEventListener('change', function() {
     document.getElementById('tugas-fields').style.display = this.value === 'tugas' ? 'block' : 'none';
 });
+
+function extractYoutubeId(url) {
+    const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
+    ];
+    for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match) return match[1];
+    }
+    return null;
+}
+
+function previewYoutubeEmbed(url) {
+    const preview = document.getElementById('youtube-preview');
+    const iframe = document.getElementById('youtube-iframe');
+    const videoId = extractYoutubeId(url);
+    if (videoId) {
+        iframe.src = 'https://www.youtube.com/embed/' + videoId;
+        preview.style.display = 'block';
+    } else {
+        iframe.src = '';
+        preview.style.display = 'none';
+    }
+}
 </script>
 @endpush
 @endsection

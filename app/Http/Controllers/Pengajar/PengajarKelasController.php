@@ -100,6 +100,7 @@ class PengajarKelasController extends Controller
             'tipe' => 'required|in:pertemuan,tugas',
             'deadline' => 'nullable|required_if:tipe,tugas|date',
             'instruksi_tugas' => 'nullable|string',
+            'youtube_url' => 'nullable|url|max:500',
             'files.*' => 'nullable|file|max:10240',
         ]);
 
@@ -111,7 +112,9 @@ class PengajarKelasController extends Controller
             'tipe' => $request->tipe,
             'deadline' => $request->tipe === 'tugas' ? $request->deadline : null,
             'instruksi_tugas' => $request->tipe === 'tugas' ? $request->instruksi_tugas : null,
+            'youtube_url' => $request->youtube_url ?: null,
         ]);
+
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
