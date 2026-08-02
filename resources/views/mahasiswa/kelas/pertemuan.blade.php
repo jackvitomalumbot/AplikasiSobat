@@ -117,19 +117,13 @@
         </h3>
         <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:#000;">
             <iframe
-                src="https://www.youtube.com/embed/{{ $pertemuan->youtubeEmbedId }}"
+                src="https://www.youtube.com/embed/{{ $pertemuan->youtubeEmbedId }}?rel=0&modestbranding=1"
                 width="100%" height="100%"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
                 style="display:block; position:absolute; top:0; left:0; width:100%; height:100%;">
             </iframe>
         </div>
-        <p class="body-sm text-muted mt-sm">
-            <a href="{{ $pertemuan->youtube_url }}" target="_blank" style="color:var(--primary);">
-                Buka di YouTube ↗
-            </a>
-        </p>
     </div>
 </div>
 @endif
