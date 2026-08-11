@@ -16,14 +16,14 @@
 </section>
 
 {{-- ═══════════════════════════════════════
-     01 — PRESTASI TERBARU
+     PRESTASI TERBARU
 ═══════════════════════════════════════ --}}
 <section class="info-section" id="prestasi">
     <div class="info-container">
         <div class="info-section-header">
             <span class="info-section-num">01</span>
             <div>
-                <h2 class="info-section-title">🏆 Prestasi Terbaru</h2>
+                <h2 class="info-section-title">Prestasi Terbaru</h2>
                 <p class="info-section-desc">Pencapaian membanggakan dari mahasiswa dan pengajar Sobat Medis.</p>
             </div>
         </div>
@@ -54,14 +54,14 @@
             {{-- Mahasiswa --}}
             @if($prestasiMahasiswa->isNotEmpty())
             <div class="prestasi-sub-col">
-                <h3 class="prestasi-sub-title">🎓 Prestasi Mahasiswa</h3>
+                <h3 class="prestasi-sub-title">Prestasi Mahasiswa</h3>
                 <div class="prestasi-list">
                     @foreach($prestasiMahasiswa as $p)
                     <div class="prestasi-item">
                         @if($p->foto)
                         <img src="{{ $p->foto_url }}" alt="" class="prestasi-item-img" loading="lazy">
                         @else
-                        <div class="prestasi-item-placeholder">🎓</div>
+                        <div class="prestasi-item-placeholder"></div>
                         @endif
                         <div class="prestasi-item-body">
                             <p class="prestasi-item-title">{{ $p->judul }}</p>
@@ -78,14 +78,14 @@
             {{-- Pengajar --}}
             @if($prestasiPengajar->isNotEmpty())
             <div class="prestasi-sub-col">
-                <h3 class="prestasi-sub-title">👨‍⚕️ Prestasi Pengajar</h3>
+                <h3 class="prestasi-sub-title">Prestasi Pengajar</h3>
                 <div class="prestasi-list">
                     @foreach($prestasiPengajar as $p)
                     <div class="prestasi-item">
                         @if($p->foto)
                         <img src="{{ $p->foto_url }}" alt="" class="prestasi-item-img" loading="lazy">
                         @else
-                        <div class="prestasi-item-placeholder">👨‍⚕️</div>
+                        <div class="prestasi-item-placeholder"></div>
                         @endif
                         <div class="prestasi-item-body">
                             <p class="prestasi-item-title">{{ $p->judul }}</p>
@@ -102,7 +102,7 @@
 
         @if($prestasiUtama->isEmpty() && $prestasiMahasiswa->isEmpty() && $prestasiPengajar->isEmpty())
         <div class="info-empty">
-            <span style="font-size:48px;">🏆</span>
+            <span style="font-size:48px;"></span>
             <p>Prestasi akan tampil di sini setelah admin menambahkannya.</p>
         </div>
         @endif
@@ -110,7 +110,7 @@
 </section>
 
 {{-- ═══════════════════════════════════════
-     02 — WHO LATEST NEWS
+     WHO LATEST NEWS
 ═══════════════════════════════════════ --}}
 <section class="info-section info-section--alt" id="who-news">
     <div class="info-container">
@@ -152,14 +152,14 @@
 </section>
 
 {{-- ═══════════════════════════════════════
-     03 — SOBAT MEDIS UPDATE
+     SOBAT MEDIS UPDATE
 ═══════════════════════════════════════ --}}
 <section class="info-section" id="update">
     <div class="info-container">
         <div class="info-section-header">
             <span class="info-section-num">03</span>
             <div>
-                <h2 class="info-section-title">📢 Sobat Medis Update</h2>
+                <h2 class="info-section-title">Sobat Medis Update</h2>
                 <p class="info-section-desc">Kelas-kelas terbaru yang baru dibuka oleh pengajar kami.</p>
             </div>
         </div>
@@ -196,7 +196,7 @@
         </div>
         @else
         <div class="info-empty">
-            <span style="font-size:48px;">📢</span>
+            <span style="font-size:48px;"></span>
             <p>Belum ada kelas terbaru. Pantau terus halaman ini!</p>
         </div>
         @endif
@@ -204,7 +204,7 @@
 </section>
 
 {{-- ═══════════════════════════════════════
-     04 — COMMUNITY HIGHLIGHT
+     COMMUNITY HIGHLIGHT
 ═══════════════════════════════════════ --}}
 <section class="info-section info-section--dark" id="komunitas">
     <div class="info-container">
@@ -218,17 +218,17 @@
 
         <div class="community-stats">
             <div class="stat-card">
-                <div class="stat-icon">👨‍🎓</div>
+                <div class="stat-icon"></div>
                 <div class="stat-number" data-target="{{ $totalMahasiswa }}">0</div>
                 <div class="stat-label">Mahasiswa Terdaftar</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">👨‍⚕️</div>
+                <div class="stat-icon"></div>
                 <div class="stat-number" data-target="{{ $totalPengajar }}">0</div>
                 <div class="stat-label">Pengajar Profesional</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">📚</div>
+                <div class="stat-icon"></div>
                 <div class="stat-number" data-target="{{ $totalKelas }}">0</div>
                 <div class="stat-label">Kelas Aktif</div>
             </div>
@@ -338,24 +338,30 @@
 ══════════════════ */
 .prestasi-featured-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 24px;
+    justify-content: center;
+    justify-items: center;
 }
 .prestasi-featured-card {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 16px;
     background: var(--surface, #fff);
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px;
     overflow: hidden;
-    padding: 24px;
-    align-items: flex-start;
+    padding: 28px;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 480px;
     transition: box-shadow 0.2s;
 }
 .prestasi-featured-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
-.prestasi-featured-img-wrap { flex-shrink: 0; width: 80px; height: 80px; border-radius: 12px; overflow: hidden; }
+.prestasi-featured-img-wrap { width: 100px; height: 100px; border-radius: 16px; overflow: hidden; }
 .prestasi-featured-img { width: 100%; height: 100%; object-fit: cover; }
-.prestasi-featured-body { flex: 1; }
+.prestasi-featured-body { width: 100%; }
 .prestasi-badge {
     display: inline-block;
     font-size: 11px;
@@ -363,10 +369,10 @@
     letter-spacing: 0.06em;
     padding: 3px 10px;
     border-radius: 100px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 .prestasi-badge--featured { background: #fff3cd; color: #856404; }
-.prestasi-featured-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; color: var(--on-surface, #1c1c1e); line-height: 1.3; }
+.prestasi-featured-title { font-size: 18px; font-weight: 700; margin: 0 0 8px; color: var(--on-surface, #1c1c1e); line-height: 1.3; }
 .prestasi-featured-desc { font-size: 14px; color: var(--on-surface-variant, #555); margin: 0; line-height: 1.6; }
 
 .prestasi-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -402,6 +408,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
+    justify-content: center;
+    justify-items: center;
 }
 .who-card {
     display: flex;
@@ -413,6 +421,10 @@
     border-radius: 16px;
     text-decoration: none;
     color: inherit;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .who-card:hover {
@@ -450,12 +462,16 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 24px;
+    justify-content: center;
+    justify-items: center;
 }
 .kelas-card {
     background: var(--surface, #fff);
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px;
     overflow: hidden;
+    width: 100%;
+    max-width: 360px;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 .kelas-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); }
