@@ -12,6 +12,11 @@ php artisan cache:clear
 php artisan route:clear
 php artisan view:clear
 
+# Build frontend assets (Three.js + CSS via Vite)
+echo "🎨 Building frontend assets..."
+npm ci --prefer-offline 2>/dev/null || npm install
+npm run build
+
 # Run migrations (--force required in production)
 echo "📦 Running database migrations..."
 php artisan migrate --force

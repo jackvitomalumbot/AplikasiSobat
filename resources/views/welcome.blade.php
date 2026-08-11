@@ -4,17 +4,337 @@
 @section('meta_description', 'SobatMedis — Platform Pembelajaran Medis Online Terpercaya. Belajar dari pengajar profesional di bidang kedokteran dan kesehatan.')
 
 @section('content')
-{{-- Hero Section --}}
-<section class="hero">
-    <div class="container">
-        <h1 class="hero-title animate-slide-up">Platform Pembelajaran Medis Terpercaya</h1>
-        <p class="hero-subtitle animate-slide-up">Hubungkan dirimu dengan pengajar profesional di bidang kedokteran. Belajar kapan saja, di mana saja, dengan materi yang terstruktur dan berkualitas.</p>
-        <a href="{{ url('/register') }}" class="btn btn-primary btn-lg animate-slide-up">
-            Mulai Belajar
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+{{-- ═══════════════════════════════════════════════════════════
+     HERO SECTION — 2-column layout with Three.js 3D logo
+════════════════════════════════════════════════════════════ --}}
+<section class="hero hero-2col" id="heroSection" aria-label="Hero SobatMedis">
+    <div class="hero-inner">
+
+        {{-- ── LEFT: Content ── --}}
+        <div class="hero-content" id="heroContent">
+            <p class="hero-eyebrow" id="heroEyebrow">Platform Pembelajaran Medis</p>
+            <h1 class="hero-title" id="heroHeading">
+                Terpercaya<br>
+                <span class="hero-title-accent">untuk Dunia Medis</span>
+            </h1>
+            <p class="hero-subtitle" id="heroSubtitle">
+                Hubungkan dirimu dengan pengajar profesional di bidang kedokteran.
+                Belajar kapan saja, di mana saja, dengan materi yang terstruktur dan berkualitas.
+            </p>
+            <div class="hero-actions" id="heroActions">
+                <a href="{{ url('/register') }}" class="btn-hero-primary" id="heroCta">
+                    <span>MULAI BELAJAR</span>
+                    <svg class="btn-hero-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+
+        {{-- ── RIGHT: 3D Logo ── --}}
+        <div class="hero-visual" id="heroVisual" aria-hidden="true">
+            {{-- Soft glow behind logo --}}
+            <div class="hero-glow"></div>
+
+            {{-- Three.js canvas --}}
+            <canvas
+                id="sobatMedisLogoCanvas"
+                data-logo-url="{{ asset('images/logo.png') }}"
+                class="hero-canvas"
+                aria-hidden="true">
+            </canvas>
+
+            {{-- Fallback: shown only if JS/Three.js fails --}}
+            <noscript>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo SobatMedis" class="hero-logo-fallback">
+            </noscript>
+            <img src="{{ asset('images/logo.png') }}" alt="" class="hero-logo-fallback" id="heroLogoFallback" style="display:none;" aria-hidden="true">
+        </div>
+
     </div>
 </section>
+
+<style>
+/* ═══════════════════════════════════════════════
+   HERO 2-COLUMN — Premium Medical Education
+   Standalone styles (no Tailwind dependency)
+═══════════════════════════════════════════════ */
+
+.hero-2col {
+    position: relative;
+    min-height: 88vh;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    background: var(--surface, #faf7f2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 80px 48px;
+    gap: 48px;
+}
+
+/* ── LEFT: Content ── */
+.hero-content {
+    text-align: left;
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-content.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.hero-eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--on-surface-variant, #6c6c70);
+    margin: 0 0 16px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s 0.1s ease, transform 0.6s 0.1s ease;
+}
+
+.hero-content.is-visible .hero-eyebrow {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-title {
+    font-family: var(--font-headline, 'Hanken Grotesk', sans-serif);
+    font-size: clamp(36px, 4.5vw, 62px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--on-surface, #1c1c1e);
+    margin: 0 0 24px;
+    max-width: 580px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s 0.2s ease, transform 0.7s 0.2s ease;
+}
+
+.hero-content.is-visible .hero-title {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-title-accent {
+    color: var(--on-surface-variant, #555);
+    font-weight: 500;
+}
+
+.hero-subtitle {
+    font-size: clamp(16px, 1.5vw, 19px);
+    line-height: 1.7;
+    color: var(--on-surface-variant, #444);
+    max-width: 540px;
+    margin: 0 0 40px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.7s 0.35s ease, transform 0.7s 0.35s ease;
+}
+
+.hero-content.is-visible .hero-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-actions {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s 0.5s ease, transform 0.6s 0.5s ease;
+}
+
+.hero-content.is-visible .hero-actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── CTA Button ── */
+.btn-hero-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--on-surface, #1c1c1e);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 36px;
+    border-radius: 6px;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.25s ease,
+                background 0.2s ease;
+    will-change: transform;
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+}
+
+.btn-hero-arrow {
+    transition: transform 0.25s ease;
+}
+
+.btn-hero-primary:hover .btn-hero-arrow {
+    transform: translateX(5px);
+}
+
+/* ── RIGHT: Visual ── */
+.hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 520px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: scale(0.88) translateY(16px);
+    transition: opacity 0.9s 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.9s 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-visual.is-visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Soft radial glow behind medallion */
+.hero-glow {
+    position: absolute;
+    inset: 10%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(230, 220, 200, 0.55) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: glowPulse 6s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%       { opacity: 1.0; transform: scale(1.05); }
+}
+
+.hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1;
+    border-radius: 50%;
+}
+
+.hero-logo-fallback {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* ── TABLET ── */
+@media (max-width: 1024px) {
+    .hero-inner {
+        padding: 60px 32px;
+        gap: 32px;
+    }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+    .hero-2col {
+        min-height: unset;
+    }
+
+    .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 48px 24px 40px;
+        gap: 40px;
+    }
+
+    .hero-content {
+        text-align: left;
+        order: 1;
+    }
+
+    .hero-visual {
+        order: 2;
+        max-width: 320px;
+        margin: 0 auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .hero-title {
+        font-size: 32px;
+        max-width: 100%;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero-inner { padding: 36px 20px 32px; }
+    .hero-title  { font-size: 28px; }
+}
+</style>
+
+{{-- Entry Animation + Fallback logic --}}
+@push('scripts')
+<script>
+(function () {
+    'use strict';
+
+    // Trigger CSS entry animations
+    function triggerHeroEntry() {
+        const content = document.getElementById('heroContent');
+        const visual  = document.getElementById('heroVisual');
+        if (content) content.classList.add('is-visible');
+        // Visual slightly delayed
+        setTimeout(() => { if (visual) visual.classList.add('is-visible'); }, 200);
+    }
+
+    // Immediately trigger (page already loaded)
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', triggerHeroEntry);
+    } else {
+        triggerHeroEntry();
+    }
+
+    // Fallback: if Three.js canvas stays blank after 3s, show img fallback
+    setTimeout(() => {
+        const canvas = document.getElementById('sobatMedisLogoCanvas');
+        const fallback = document.getElementById('heroLogoFallback');
+        if (!canvas || !fallback) return;
+        const ctx = canvas.getContext('webgl') || canvas.getContext('webgl2');
+        if (!ctx) {
+            canvas.style.display = 'none';
+            fallback.style.display = 'block';
+        }
+    }, 3000);
+})();
+</script>
+@endpush
 
 {{-- Pengajar Unggulan — Premium Interactive Redesign --}}
 <section class="section pu-section" id="pengajar-unggulan">
