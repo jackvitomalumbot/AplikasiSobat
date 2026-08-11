@@ -242,21 +242,18 @@
         document.getElementById('puProfileAvatar').alt = d.nama;
         document.getElementById('puProfileName').textContent = d.nama;
         document.getElementById('puProfileSpesialisasi').textContent = d.spesialisasi;
-        document.getElementById('puProfileRatingVal').textContent = d.rating;
-        document.getElementById('puProfileExpVal').textContent = d.pengalaman;
         document.getElementById('puProfileMotivasi').textContent = d.motivasi;
         document.getElementById('puProfileDeskripsi').textContent = d.deskripsi;
-        document.getElementById('puStatMahasiswa').textContent = d.mahasiswa;
-        document.getElementById('puStatKelas').textContent = d.kelas;
-        document.getElementById('puStatRating').textContent = d.rating;
         document.getElementById('puLihatKelasBtn').href = d.kelasUrl;
 
         const keahlianWrap = document.getElementById('puProfileKeahlian');
         keahlianWrap.innerHTML = '';
-        d.keahlian.split('|').forEach(k => {
+        (d.keahlian || '').split('|').forEach(k => {
+            k = k.trim();
+            if (!k) return;
             const tag = document.createElement('span');
             tag.className = 'pu-keahlian-tag';
-            tag.textContent = k.trim();
+            tag.textContent = k;
             keahlianWrap.appendChild(tag);
         });
     }
@@ -266,21 +263,18 @@
         document.getElementById('puBsAvatar').alt = d.nama;
         document.getElementById('puBsName').textContent = d.nama;
         document.getElementById('puBsSpesialisasi').textContent = d.spesialisasi;
-        document.getElementById('puBsRating').textContent = d.rating;
-        document.getElementById('puBsExp').textContent = '· ' + d.pengalaman;
         document.getElementById('puBsMotivasi').textContent = d.motivasi;
         document.getElementById('puBsDeskripsi').textContent = d.deskripsi;
-        document.getElementById('puBsStatM').textContent = d.mahasiswa;
-        document.getElementById('puBsStatK').textContent = d.kelas;
-        document.getElementById('puBsStatR').textContent = d.rating;
         document.getElementById('puBsLihatKelas').href = d.kelasUrl;
 
         const keahlianWrap = document.getElementById('puBsKeahlian');
         keahlianWrap.innerHTML = '';
-        d.keahlian.split('|').forEach(k => {
+        (d.keahlian || '').split('|').forEach(k => {
+            k = k.trim();
+            if (!k) return;
             const tag = document.createElement('span');
             tag.className = 'pu-keahlian-tag';
-            tag.textContent = k.trim();
+            tag.textContent = k;
             keahlianWrap.appendChild(tag);
         });
     }
