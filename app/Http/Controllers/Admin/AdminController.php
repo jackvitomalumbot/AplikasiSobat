@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\MahasiswaDetail;
 use App\Models\PengajarDetail;
 use App\Models\PengajarUnggulan;
+use App\Models\Prestasi;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -341,5 +342,91 @@ class AdminController extends Controller
     {
         $pengajarUnggulan->delete();
         return back()->with('success', 'Pengajar Unggulan berhasil dihapus.');
+    }
+
+    /* ─── Prestasi ─── */
+
+    public function prestasi()
+    {
+        $list = Prestasi::orderBy('tipe')->orderBy('urutan')->orderBy('id')->get();
+        return view('admin.prestasi', compact('list'));
+    }
+
+    public function storePrestasi(Request $request)
+    {
+        $data = $request->validate([
+            'judul'       => 'required|string|max:255',
+            'deskripsi'   => 'nullable|string|max:1000',
+            'foto_file'   => 'nullable|image|max:4096',
+            'tipe'        => 'required|in:featured,mahasiswa,pengajar',
+            'urutan'      => 'nullable|integer|min:0',
+            'aktif'       => 'nullable|boolean',
+        ]);
+
+        $foto = null;
+        if ($request->hasFile('foto_file')) {
+            $file     = $request->file('foto_file');
+            $filename = 'prestasi_' . time() . '_' . uniqid() . '.' . ($file->getClientOriginalExtension() ?: 'jpg');
+            $destPath = public_path('uploads/prestasi');
+            if (!File::isDirectory($destPath)) File::makeDirectory($destPath, 0755, true);
+            $file->move($destPath, $filename);
+            $foto = 'uploads/prestasi/' . $filename;
+        }
+
+        Prestasi::create([
+            'judul'     => $data['judul'],
+            'deskripsi' => $data['deskripsi'] ?? null,
+            'foto'      => $foto,
+            'tipe'      => $data['tipe'],
+            'urutan'    => $data['urutan'] ?? 0,
+            'aktif'     => $request->boolean('aktif', true),
+        ]);
+
+        return back()->with('success', 'Prestasi berhasil ditambahkan.');
+    }
+
+    public function updatePrestasi(Request $request, Prestasi $prestasi)
+    {
+        $data = $request->validate([
+            'judul'       => 'required|string|max:255',
+            'deskripsi'   => 'nullable|string|max:1000',
+            'foto_file'   => 'nullable|image|max:4096',
+            'tipe'        => 'required|in:featured,mahasiswa,pengajar',
+            'urutan'      => 'nullable|integer|min:0',
+            'aktif'       => 'nullable|boolean',
+        ]);
+
+        $foto = $prestasi->foto;
+        if ($request->hasFile('foto_file')) {
+            if ($foto && !filter_var($foto, FILTER_VALIDATE_URL) && File::exists(public_path($foto))) {
+                File::delete(public_path($foto));
+            }
+            $file     = $request->file('foto_file');
+            $filename = 'prestasi_' . time() . '_' . uniqid() . '.' . ($file->getClientOriginalExtension() ?: 'jpg');
+            $destPath = public_path('uploads/prestasi');
+            if (!File::isDirectory($destPath)) File::makeDirectory($destPath, 0755, true);
+            $file->move($destPath, $filename);
+            $foto = 'uploads/prestasi/' . $filename;
+        }
+
+        $prestasi->update([
+            'judul'     => $data['judul'],
+            'deskripsi' => $data['deskripsi'] ?? null,
+            'foto'      => $foto,
+            'tipe'      => $data['tipe'],
+            'urutan'    => $data['urutan'] ?? 0,
+            'aktif'     => $request->boolean('aktif', true),
+        ]);
+
+        return back()->with('success', 'Prestasi berhasil diperbarui.');
+    }
+
+    public function destroyPrestasi(Prestasi $prestasi)
+    {
+        if ($prestasi->foto && !filter_var($prestasi->foto, FILTER_VALIDATE_URL) && File::exists(public_path($prestasi->foto))) {
+            File::delete(public_path($prestasi->foto));
+        }
+        $prestasi->delete();
+        return back()->with('success', 'Prestasi berhasil dihapus.');
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\AdminController;
@@ -21,6 +22,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /* ─── Public Routes ─── */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/info', [InfoController::class, 'index'])->name('info');
 Route::get('/bantuan', [HelpController::class, 'index'])->name('help');
 Route::post('/bantuan/email', [HelpController::class, 'sendEmail'])->name('help.email');
 
@@ -83,6 +85,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/info-pengajar', [AdminController::class, 'storePengajarUnggulan'])->name('admin.info-pengajar.store');
     Route::put('/info-pengajar/{pengajarUnggulan}', [AdminController::class, 'updatePengajarUnggulan'])->name('admin.info-pengajar.update');
     Route::delete('/info-pengajar/{pengajarUnggulan}', [AdminController::class, 'destroyPengajarUnggulan'])->name('admin.info-pengajar.destroy');
+
+    // Prestasi
+    Route::get('/prestasi', [AdminController::class, 'prestasi'])->name('admin.prestasi');
+    Route::post('/prestasi', [AdminController::class, 'storePrestasi'])->name('admin.prestasi.store');
+    Route::put('/prestasi/{prestasi}', [AdminController::class, 'updatePrestasi'])->name('admin.prestasi.update');
+    Route::delete('/prestasi/{prestasi}', [AdminController::class, 'destroyPrestasi'])->name('admin.prestasi.destroy');
 });
 
 /* ─── Pengajar Routes ─── */

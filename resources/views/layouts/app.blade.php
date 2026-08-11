@@ -22,7 +22,8 @@
                 <span>SobatMedis</span>
             </a>
             <nav class="topnav-links">
-                <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Dashboard</a>
+                <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Beranda</a>
+                <a href="{{ url('/info') }}" class="{{ request()->is('info') ? 'active' : '' }}">Info</a>
                 <a href="{{ url('/bantuan') }}" class="{{ request()->is('bantuan') ? 'active' : '' }}">Pusat Bantuan</a>
             </nav>
             <div class="topnav-actions">
