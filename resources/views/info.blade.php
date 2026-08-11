@@ -5,13 +5,34 @@
 @section('content')
 
 {{-- ═══════════════════════════════════════
-     PAGE HEADER
+     PAGE HEADER — 3-column with 3D logos
 ═══════════════════════════════════════ --}}
-<section class="info-page-hero">
-    <div class="info-container">
-        <p class="info-eyebrow">Pusat Informasi</p>
-        <h1 class="info-page-title">Info Sobat Medis</h1>
-        <p class="info-page-subtitle">Prestasi terbaru, berita kesehatan dunia, kelas baru, dan perkembangan komunitas kami.</p>
+<section class="info-page-hero" id="infoPageHero">
+    <div class="info-hero-inner">
+
+        {{-- Left 3D Logo --}}
+        <div class="info-hero-logo info-hero-logo--left" aria-hidden="true">
+            <div class="info-hero-glow"></div>
+            <canvas id="infoLogoCanvasLeft"
+                data-logo-url="{{ asset('images/logo.png') }}"
+                class="info-hero-canvas"></canvas>
+        </div>
+
+        {{-- Center Text --}}
+        <div class="info-hero-content" id="infoHeroContent">
+            <p class="info-eyebrow">Pusat Informasi</p>
+            <h1 class="info-page-title">Info Sobat Medis</h1>
+            <p class="info-page-subtitle">Prestasi terbaru, berita kesehatan dunia, kelas baru, dan perkembangan komunitas kami.</p>
+        </div>
+
+        {{-- Right 3D Logo --}}
+        <div class="info-hero-logo info-hero-logo--right" aria-hidden="true">
+            <div class="info-hero-glow"></div>
+            <canvas id="infoLogoCanvasRight"
+                data-logo-url="{{ asset('images/logo.png') }}"
+                class="info-hero-canvas"></canvas>
+        </div>
+
     </div>
 </section>
 
@@ -250,11 +271,66 @@
 
 /* ── Page Hero ── */
 .info-page-hero {
-    padding: 72px 0 48px;
+    padding: 0;
     background: var(--surface, #faf7f2);
     border-bottom: 1px solid rgba(0,0,0,0.06);
-    text-align: center;
+    overflow: hidden;
 }
+
+/* 3-column inner layout */
+.info-hero-inner {
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    align-items: center;
+    min-height: 340px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+/* Center text */
+.info-hero-content {
+    text-align: center;
+    padding: 64px 24px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.info-hero-content.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Side 3D logo containers */
+.info-hero-logo {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+    transition: opacity 1s 0.2s ease;
+}
+.info-hero-logo.is-visible { opacity: 1; }
+.info-hero-logo--left  { justify-self: start; }
+.info-hero-logo--right { justify-self: end; }
+
+.info-hero-glow {
+    position: absolute;
+    inset: 5%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,210,190,0.5) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 6s ease-in-out infinite;
+}
+
+.info-hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50%;
+}
+
+/* Eyebrow & title */
 .info-eyebrow {
     font-size: 12px;
     font-weight: 700;
@@ -264,7 +340,7 @@
     margin: 0 0 12px;
 }
 .info-page-title {
-    font-size: clamp(32px, 5vw, 56px);
+    font-size: clamp(32px, 4vw, 52px);
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.1;
@@ -272,11 +348,31 @@
     margin: 0 0 16px;
 }
 .info-page-subtitle {
-    font-size: 17px;
+    font-size: 16px;
     color: var(--on-surface-variant, #555);
-    max-width: 520px;
+    max-width: 480px;
     margin: 0 auto;
     line-height: 1.7;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .info-hero-inner {
+        grid-template-columns: 140px 1fr 140px;
+        padding: 0 16px;
+    }
+    .info-hero-logo { width: 130px; height: 130px; }
+}
+
+/* Mobile — hide side logos, full width text */
+@media (max-width: 600px) {
+    .info-hero-inner {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        min-height: unset;
+    }
+    .info-hero-logo { display: none; }
+    .info-hero-content { padding: 48px 16px; }
 }
 
 /* ── Section base ── */
