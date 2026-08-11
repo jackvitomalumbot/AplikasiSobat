@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 @section('title', 'Pengajar Unggulan')
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/photo-cropper.css') }}">
+@endpush
 
 @section('content')
 <div class="d-flex justify-between align-center flex-wrap gap-md">
@@ -134,6 +137,7 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/photo-cropper.js') }}"></script>
 <script>
 function openEditPu(id, nama, spesialisasi, foto, deskripsi, keahlian, motivasi, urutan, aktif) {
     const form = document.getElementById('form-edit-pu');
@@ -147,12 +151,16 @@ function openEditPu(id, nama, spesialisasi, foto, deskripsi, keahlian, motivasi,
     form.querySelector('[name="urutan"]').value = urutan ?? 0;
     form.querySelector('[name="aktif"]').checked = aktif;
 
-    // foto: jika URL tampilkan di foto_url, jika path kosongkan
-    const fotoUrlInput = form.querySelector('[name="foto_url"]');
-    if (foto && (foto.startsWith('http://') || foto.startsWith('https://'))) {
-        fotoUrlInput.value = foto;
-    } else {
-        fotoUrlInput.value = '';
+    // Update foto preview
+    const preview = document.getElementById('edit_foto_preview');
+    if (preview) {
+        if (foto) {
+            // Jika URL langsung atau path public
+            const isUrl = foto.startsWith('http://') || foto.startsWith('https://');
+            preview.src = isUrl ? foto : '/' + foto;
+        } else {
+            preview.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(nama || 'Foto') + '&size=128&background=e9e2cc&color=635e4d';
+        }
     }
 
     document.getElementById('modal-edit-pu').hidden = false;

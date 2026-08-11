@@ -11,6 +11,7 @@ use App\Models\PengajarUnggulan;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -255,8 +256,7 @@ class AdminController extends Controller
         $data = $request->validate([
             'nama'         => 'required|string|max:255',
             'spesialisasi' => 'nullable|string|max:255',
-            'foto_url'     => 'nullable|url|max:500',
-            'foto_file'    => 'nullable|image|max:2048',
+            'foto_file'    => 'nullable|image|max:4096',
             'deskripsi'    => 'nullable|string|max:1000',
             'keahlian'     => 'nullable|string|max:500',
             'motivasi'     => 'nullable|string|max:300',
@@ -266,10 +266,14 @@ class AdminController extends Controller
 
         $foto = null;
         if ($request->hasFile('foto_file')) {
-            $foto = $request->file('foto_file')->store('pengajar-unggulan', 'public');
-            $foto = 'storage/' . $foto;
-        } elseif ($request->filled('foto_url')) {
-            $foto = $request->foto_url;
+            $file     = $request->file('foto_file');
+            $filename = 'pu_' . time() . '_' . uniqid() . '.' . ($file->getClientOriginalExtension() ?: 'jpg');
+            $destPath = public_path('uploads/pengajar-unggulan');
+            if (!File::isDirectory($destPath)) {
+                File::makeDirectory($destPath, 0755, true);
+            }
+            $file->move($destPath, $filename);
+            $foto = 'uploads/pengajar-unggulan/' . $filename;
         }
 
         PengajarUnggulan::create([
@@ -291,8 +295,7 @@ class AdminController extends Controller
         $data = $request->validate([
             'nama'         => 'required|string|max:255',
             'spesialisasi' => 'nullable|string|max:255',
-            'foto_url'     => 'nullable|url|max:500',
-            'foto_file'    => 'nullable|image|max:2048',
+            'foto_file'    => 'nullable|image|max:4096',
             'deskripsi'    => 'nullable|string|max:1000',
             'keahlian'     => 'nullable|string|max:500',
             'motivasi'     => 'nullable|string|max:300',
@@ -302,9 +305,18 @@ class AdminController extends Controller
 
         $foto = $pengajarUnggulan->foto;
         if ($request->hasFile('foto_file')) {
-            $foto = 'storage/' . $request->file('foto_file')->store('pengajar-unggulan', 'public');
-        } elseif ($request->filled('foto_url')) {
-            $foto = $request->foto_url;
+            // Hapus foto lama jika ada di public
+            if ($foto && !filter_var($foto, FILTER_VALIDATE_URL) && File::exists(public_path($foto))) {
+                File::delete(public_path($foto));
+            }
+            $file     = $request->file('foto_file');
+            $filename = 'pu_' . time() . '_' . uniqid() . '.' . ($file->getClientOriginalExtension() ?: 'jpg');
+            $destPath = public_path('uploads/pengajar-unggulan');
+            if (!File::isDirectory($destPath)) {
+                File::makeDirectory($destPath, 0755, true);
+            }
+            $file->move($destPath, $filename);
+            $foto = 'uploads/pengajar-unggulan/' . $filename;
         }
 
         $pengajarUnggulan->update([

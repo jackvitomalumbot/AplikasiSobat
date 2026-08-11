@@ -1,5 +1,56 @@
 {{-- Shared form partial: dipakai oleh modal Tambah dan modal Edit --}}
+
+{{-- Foto dengan Photo Cropper --}}
 <div class="modal-body">
+    {{-- Foto Preview + Trigger --}}
+    <div class="form-group">
+        <label class="form-label">Foto Pengajar</label>
+        <div style="display:flex;align-items:center;gap:var(--space-lg);flex-wrap:wrap;">
+            {{-- Preview Avatar --}}
+            <div class="photo-cropper-trigger"
+                data-photo-cropper
+                data-input-id="{{ isset($editMode) && $editMode ? 'edit_foto_file' : 'add_foto_file' }}"
+                data-crop-size="220"
+                data-output-size="400"
+                style="flex-shrink:0;">
+                <img id="{{ isset($editMode) && $editMode ? 'edit_foto_preview' : 'add_foto_preview' }}"
+                    src="{{ ($pu && $pu->foto) ? $pu->foto_url : 'https://ui-avatars.com/api/?name=Foto&size=128&background=e9e2cc&color=635e4d' }}"
+                    alt="Preview Foto"
+                    class="avatar"
+                    style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid var(--outline-variant);">
+                <div class="photo-cropper-overlay">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span style="font-size:11px;">Ubah Foto</span>
+                </div>
+            </div>
+
+            <div style="flex:1;min-width:180px;">
+                {{-- Hidden file input (dikendalikan oleh cropper) --}}
+                <input type="file"
+                    id="{{ isset($editMode) && $editMode ? 'edit_foto_file' : 'add_foto_file' }}"
+                    name="foto_file"
+                    accept="image/*"
+                    style="display:none;">
+
+                <p style="font-size:var(--font-size-sm);color:var(--on-surface-variant);margin:0 0 var(--space-sm);">
+                    Klik foto untuk memilih dan mengatur posisi crop (lingkaran 1:1).
+                </p>
+                <p style="font-size:11px;color:var(--on-surface-variant);margin:0;">
+                    Format: JPG, PNG, WebP · Maks. 4MB
+                </p>
+
+                {{-- Tombol manual jika trigger tidak berfungsi --}}
+                <button type="button"
+                    onclick="document.getElementById('{{ isset($editMode) && $editMode ? 'edit_foto_file' : 'add_foto_file' }}').click()"
+                    class="btn btn-outline btn-sm"
+                    style="margin-top:var(--space-sm);">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Pilih Foto
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="form-group">
         <label class="form-label">Nama Lengkap <span class="required">*</span></label>
         <input type="text" name="nama" class="form-control"
@@ -12,20 +63,6 @@
         <input type="text" name="spesialisasi" class="form-control"
             value="{{ old('spesialisasi', $pu->spesialisasi ?? '') }}"
             placeholder="Contoh: Obstetri & Ginekologi">
-    </div>
-
-    <div class="form-group">
-        <label class="form-label">Foto — Upload File</label>
-        <input type="file" name="foto_file" class="form-control" accept="image/*">
-        <small style="color:var(--on-surface-variant);font-size:11px;">Maks. 2MB. Jika diisi, akan menggantikan URL foto.</small>
-    </div>
-
-    <div class="form-group">
-        <label class="form-label">Foto — URL Gambar</label>
-        <input type="url" name="foto_url" class="form-control"
-            value="{{ old('foto_url', (isset($pu) && $pu && filter_var($pu->foto ?? '', FILTER_VALIDATE_URL)) ? $pu->foto : '') }}"
-            placeholder="https://contoh.com/foto.jpg">
-        <small style="color:var(--on-surface-variant);font-size:11px;">Isi salah satu: upload file atau URL. Upload file lebih diprioritaskan.</small>
     </div>
 
     <div class="form-group">

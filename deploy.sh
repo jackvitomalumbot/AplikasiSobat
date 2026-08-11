@@ -30,6 +30,7 @@ mkdir -p public/uploads/profiles
 mkdir -p public/uploads/thumbnails
 mkdir -p public/uploads/materi
 mkdir -p public/uploads/submissions
+mkdir -p public/uploads/pengajar-unggulan
 
 echo "✅ Setup completed! Starting server..."
 
