@@ -409,6 +409,146 @@
 
 
 
+{{-- ═══════════════════════════════════════════════════════════
+     REKAN PENGAJAR SECTION
+════════════════════════════════════════════════════════════ --}}
+<section class="section rp-section" id="rekanPengajar">
+    <div class="container">
+        <div class="text-center mb-xl animate-on-scroll" style="opacity:0;">
+            <p class="section-eyebrow">Tim Pengajar</p>
+            <h2 class="headline-lg">Rekan Pengajar</h2>
+            <p class="body-lg text-muted" style="max-width:520px;margin:0 auto;">
+                Didukung oleh para tenaga medis berpengalaman yang siap membimbing perjalanan belajarmu.
+            </p>
+        </div>
+
+        <div class="rp-grid animate-on-scroll" style="opacity:0;" id="rpGrid">
+            @forelse($rekanPengajar ?? [] as $rekan)
+                <div class="rp-card">
+                    <div class="rp-avatar-wrap">
+                        <img src="{{ $rekan->foto_url }}"
+                            alt="{{ $rekan->nama }}"
+                            class="rp-avatar"
+                            loading="lazy"
+                            onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($rekan->nama) }}&size=128&background=e9e2cc&color=635e4d'">
+                    </div>
+                    <div class="rp-info">
+                        <p class="rp-name">{{ $rekan->nama }}</p>
+                        <p class="rp-specialty">{{ $rekan->spesialisasi ?? 'Pengajar Medis' }}</p>
+                    </div>
+                </div>
+            @empty
+                @php
+                    $dummyRekan = [
+                        ['nama' => 'Dr. Andi Prasetyo', 'spesialisasi' => 'Neurologi', 'bg' => 'd5e8f5&color=1a3a6e'],
+                        ['nama' => 'Dr. Sari Wulandari', 'spesialisasi' => 'Pediatri', 'bg' => 'f5e8d5&color=6e3a1a'],
+                        ['nama' => 'Dr. Budi Santoso', 'spesialisasi' => 'Ortopedi', 'bg' => 'e8f5d5&color=3a6e1a'],
+                        ['nama' => 'Dr. Maya Indira', 'spesialisasi' => 'Anestesiologi', 'bg' => 'f5d5e8&color=6e1a3a'],
+                        ['nama' => 'Dr. Reza Firmansyah', 'spesialisasi' => 'Urologi', 'bg' => 'd5f5e8&color=1a6e3a'],
+                        ['nama' => 'Dr. Lestari Putri', 'spesialisasi' => 'Onkologi', 'bg' => 'e8d5f5&color=3a1a6e'],
+                    ];
+                @endphp
+                @foreach($dummyRekan as $dr)
+                <div class="rp-card">
+                    <div class="rp-avatar-wrap">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($dr['nama']) }}&size=128&background={{ $dr['bg'] }}"
+                            alt="{{ $dr['nama'] }}" class="rp-avatar" loading="lazy">
+                    </div>
+                    <div class="rp-info">
+                        <p class="rp-name">{{ $dr['nama'] }}</p>
+                        <p class="rp-specialty">{{ $dr['spesialisasi'] }}</p>
+                    </div>
+                </div>
+                @endforeach
+            @endforelse
+        </div>
+    </div>
+</section>
+
+<style>
+/* ══════════════════════════════════════
+   Rekan Pengajar Section
+══════════════════════════════════════ */
+.rp-section {
+    background: linear-gradient(180deg, var(--surface-container-low, #f8f5ef) 0%, var(--background, #faf7f2) 100%);
+    padding: var(--space-3xl, 72px) 0;
+}
+
+.rp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-lg, 24px);
+    justify-items: center;
+}
+
+@media (max-width: 600px) {
+    .rp-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md, 16px);
+    }
+}
+
+.rp-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm, 10px);
+    padding: var(--space-md, 16px) var(--space-sm, 10px);
+    background: var(--surface, #fff);
+    border: 1px solid var(--outline-variant, rgba(0,0,0,0.08));
+    border-radius: var(--radius-lg, 16px);
+    width: 100%;
+    max-width: 170px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+}
+
+.rp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.rp-avatar-wrap {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+}
+
+.rp-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--outline-variant, rgba(0,0,0,0.1));
+    display: block;
+}
+
+.rp-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.rp-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-surface, #1c1c1e);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.rp-specialty {
+    font-size: 11px;
+    color: var(--on-surface-variant, #6c6c70);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+    line-height: 1.3;
+}
+</style>
+
 {{-- CTA Section --}}
 <section class="section">
     <div class="container" style="text-align: center;">

@@ -20,10 +20,11 @@ class PengajarUnggulan extends Model
         'motivasi',
         'urutan',
         'aktif',
+        'tipe',
     ];
 
     protected $casts = [
-        'aktif' => 'boolean',
+        'aktif'  => 'boolean',
         'urutan' => 'integer',
     ];
 

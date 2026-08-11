@@ -245,10 +245,11 @@ class AdminController extends Controller
 
     /* ─── Pengajar Unggulan (Landing Page) ─── */
 
-    public function pengajarUnggulan()
+    public function infoPengajar()
     {
-        $list = PengajarUnggulan::orderBy('urutan')->orderBy('id')->get();
-        return view('admin.pengajar-unggulan', compact('list'));
+        $unggulan = PengajarUnggulan::where('tipe', 'unggulan')->orderBy('urutan')->orderBy('id')->get();
+        $rekan    = PengajarUnggulan::where('tipe', 'rekan')->orderBy('urutan')->orderBy('id')->get();
+        return view('admin.info-pengajar', compact('unggulan', 'rekan'));
     }
 
     public function storePengajarUnggulan(Request $request)
@@ -262,6 +263,7 @@ class AdminController extends Controller
             'motivasi'     => 'nullable|string|max:300',
             'urutan'       => 'nullable|integer|min:0',
             'aktif'        => 'nullable|boolean',
+            'tipe'         => 'required|in:unggulan,rekan',
         ]);
 
         $foto = null;
@@ -285,9 +287,10 @@ class AdminController extends Controller
             'motivasi'     => $data['motivasi'] ?? null,
             'urutan'       => $data['urutan'] ?? 0,
             'aktif'        => $request->boolean('aktif', true),
+            'tipe'         => $data['tipe'],
         ]);
 
-        return back()->with('success', 'Pengajar Unggulan berhasil ditambahkan.');
+        return back()->with('success', ($data['tipe'] === 'unggulan' ? 'Pengajar Unggulan' : 'Rekan Pengajar') . ' berhasil ditambahkan.');
     }
 
     public function updatePengajarUnggulan(Request $request, PengajarUnggulan $pengajarUnggulan)
@@ -301,11 +304,11 @@ class AdminController extends Controller
             'motivasi'     => 'nullable|string|max:300',
             'urutan'       => 'nullable|integer|min:0',
             'aktif'        => 'nullable|boolean',
+            'tipe'         => 'nullable|in:unggulan,rekan',
         ]);
 
         $foto = $pengajarUnggulan->foto;
         if ($request->hasFile('foto_file')) {
-            // Hapus foto lama jika ada di public
             if ($foto && !filter_var($foto, FILTER_VALIDATE_URL) && File::exists(public_path($foto))) {
                 File::delete(public_path($foto));
             }
@@ -328,9 +331,10 @@ class AdminController extends Controller
             'motivasi'     => $data['motivasi'] ?? null,
             'urutan'       => $data['urutan'] ?? 0,
             'aktif'        => $request->boolean('aktif', true),
+            'tipe'         => $data['tipe'] ?? $pengajarUnggulan->tipe,
         ]);
 
-        return back()->with('success', 'Pengajar Unggulan berhasil diperbarui.');
+        return back()->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroyPengajarUnggulan(PengajarUnggulan $pengajarUnggulan)

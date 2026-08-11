@@ -79,10 +79,10 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/transaksi/{enrollment}/reject', [AdminController::class, 'rejectPayment'])->name('admin.transaksi.reject');
 
     // Pengajar Unggulan (Landing Page)
-    Route::get('/pengajar-unggulan', [AdminController::class, 'pengajarUnggulan'])->name('admin.pengajar-unggulan');
-    Route::post('/pengajar-unggulan', [AdminController::class, 'storePengajarUnggulan'])->name('admin.pengajar-unggulan.store');
-    Route::put('/pengajar-unggulan/{pengajarUnggulan}', [AdminController::class, 'updatePengajarUnggulan'])->name('admin.pengajar-unggulan.update');
-    Route::delete('/pengajar-unggulan/{pengajarUnggulan}', [AdminController::class, 'destroyPengajarUnggulan'])->name('admin.pengajar-unggulan.destroy');
+    Route::get('/info-pengajar', [AdminController::class, 'infoPengajar'])->name('admin.info-pengajar');
+    Route::post('/info-pengajar', [AdminController::class, 'storePengajarUnggulan'])->name('admin.info-pengajar.store');
+    Route::put('/info-pengajar/{pengajarUnggulan}', [AdminController::class, 'updatePengajarUnggulan'])->name('admin.info-pengajar.update');
+    Route::delete('/info-pengajar/{pengajarUnggulan}', [AdminController::class, 'destroyPengajarUnggulan'])->name('admin.info-pengajar.destroy');
 });
 
 /* ─── Pengajar Routes ─── */
