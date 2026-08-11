@@ -143,6 +143,9 @@ Route::prefix('mahasiswa')->middleware(['auth', 'role:mahasiswa', 'device.limit'
     Route::get('/pertemuan/{pertemuan}', [MahasiswaKelasController::class, 'showPertemuan'])->name('mahasiswa.pertemuan.show');
     Route::post('/tugas/{pertemuan}/submit', [MahasiswaKelasController::class, 'submitTugas'])->name('mahasiswa.tugas.submit');
 
+    // Secure PDF Download (watermarked)
+    Route::get('/materi/{materiFile}/download', [MahasiswaKelasController::class, 'downloadMateri'])->name('mahasiswa.materi.download');
+
     // Kuis
     Route::get('/kuis/{kui}', [MahasiswaKuisController::class, 'show'])->name('mahasiswa.kuis.show');
     Route::post('/kuis/{kui}/submit', [MahasiswaKuisController::class, 'submit'])->name('mahasiswa.kuis.submit');

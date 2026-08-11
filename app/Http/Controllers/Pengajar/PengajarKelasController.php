@@ -101,7 +101,7 @@ class PengajarKelasController extends Controller
             'deadline' => 'nullable|required_if:tipe,tugas|date',
             'instruksi_tugas' => 'nullable|string',
             'youtube_url' => 'nullable|url|max:500',
-            'files.*' => 'nullable|file|max:10240',
+            'files.*' => 'nullable|file|max:51200|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx',
         ]);
 
         $pertemuan = Pertemuan::create([

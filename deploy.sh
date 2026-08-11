@@ -38,6 +38,19 @@ mkdir -p public/uploads/submissions
 mkdir -p public/uploads/pengajar-unggulan
 mkdir -p public/uploads/prestasi
 
+# Watermarked PDF cache directory
+mkdir -p storage/app/watermarked
+chmod -R 755 storage/app/watermarked
+
+# Install LibreOffice for Word/PPT → PDF conversion (silent, non-blocking)
+echo "📄 Checking LibreOffice..."
+if ! command -v soffice &> /dev/null; then
+    echo "🔽 Installing LibreOffice (headless)..."
+    apt-get update -qq && apt-get install -y --no-install-recommends \
+        libreoffice-writer libreoffice-impress libreoffice-calc \
+        libreoffice-common fonts-liberation 2>/dev/null || true
+fi
+
 echo "✅ Setup completed! Starting server..."
 
 # Start Apache (DigitalOcean App Platform uses heroku-php-apache2)

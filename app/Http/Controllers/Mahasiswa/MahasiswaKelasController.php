@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Mahasiswa;
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
 use App\Models\Kelas;
+use App\Models\MateriFile;
 use App\Models\Pertemuan;
 use App\Models\TugasSubmission;
+use App\Services\DocumentWatermarkService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MahasiswaKelasController extends Controller
 {
@@ -80,6 +83,44 @@ class MahasiswaKelasController extends Controller
         }
 
         return view('mahasiswa.kelas.pertemuan', compact('pertemuan', 'kelas', 'absensi', 'submission'));
+    }
+
+    /* ─── Secure PDF Download (Watermarked) ─── */
+
+    public function downloadMateri(MateriFile $materiFile)
+    {
+        $user     = auth()->user();
+        $pertemuan = $materiFile->pertemuan;
+        $kelas    = $pertemuan->kelas;
+
+        // Pastikan mahasiswa sudah enrolled dan payment paid
+        $enrolled = $user->enrollments()
+            ->where('kelas_id', $kelas->id)
+            ->where('payment_status', 'paid')
+            ->exists();
+
+        if (!$enrolled) {
+            abort(403, 'Anda tidak memiliki akses ke file ini.');
+        }
+
+        try {
+            $service   = new DocumentWatermarkService();
+            $pdfPath   = $service->processForDownload($materiFile->file_path, $materiFile->file_name);
+
+            $downloadName = pathinfo($materiFile->file_name, PATHINFO_FILENAME) . '_SobatMedis.pdf';
+
+            return response()->file($pdfPath, [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $downloadName . '"',
+                'Cache-Control'       => 'no-store, no-cache',
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('DocumentWatermarkService error: ' . $e->getMessage());
+            // Fallback: direct download of original file
+            $absPath = public_path($materiFile->file_path);
+            if (!file_exists($absPath)) abort(404);
+            return response()->download($absPath, $materiFile->file_name);
+        }
     }
 
     /* ─── Submit Tugas + Auto-Absensi ─── */
