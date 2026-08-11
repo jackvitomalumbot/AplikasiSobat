@@ -60,71 +60,7 @@
     </div>
 </section>
 
-{{-- Carousel Pengajar Tambahan --}}
-<section class="section" style="background: var(--surface-container-low);">
-    <div class="container">
-        <div class="section-header animate-on-scroll" style="opacity: 0;">
-            <h2>Semua Pengajar</h2>
-            <p>Temukan pengajar yang tepat untuk bidang yang ingin kamu pelajari.</p>
-        </div>
 
-        <div class="carousel-section animate-on-scroll" style="opacity: 0;">
-            <button class="carousel-btn carousel-btn-prev" aria-label="Previous">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-
-            <div style="overflow: hidden;">
-                <div class="carousel-track">
-                    @forelse($allPengajar ?? [] as $pengajar)
-                        <div class="card card-pengajar">
-                            <img 
-                                src="{{ $pengajar->foto_profile ? asset($pengajar->foto_profile) : 'https://ui-avatars.com/api/?name=' . urlencode($pengajar->nama) . '&size=192&background=cce5ff&color=004b73' }}" 
-                                alt="{{ $pengajar->nama }}" 
-                                class="pengajar-avatar"
-                            >
-                            <h3 class="pengajar-name">{{ $pengajar->nama }}</h3>
-                            <p class="pengajar-specialty">{{ $pengajar->pengajarDetail->spesialisasi ?? 'Pengajar Medis' }}</p>
-                            <div class="pengajar-rating">
-                                <svg width="16" height="16" fill="#894d00" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                {{ number_format($pengajar->rating ?? 4.5, 1) }}
-                            </div>
-                        </div>
-                    @empty
-                        @php
-                            $dummyPengajar = [
-                                ['Dr. Rina Wati', 'Patologi', 4.6],
-                                ['Dr. Hasan Ali', 'Mikrobiologi', 4.5],
-                                ['Dr. Maya Sari', 'Kardiologi', 4.9],
-                                ['Dr. Rizky Pratama', 'Neurologi', 4.7],
-                                ['Dr. Linda Kusuma', 'Pediatri', 4.8],
-                                ['Dr. Fajar Nugroho', 'Dermatologi', 4.6],
-                            ];
-                        @endphp
-                        @foreach($dummyPengajar as $dp)
-                        <div class="card card-pengajar">
-                            <img 
-                                src="https://ui-avatars.com/api/?name={{ urlencode($dp[0]) }}&size=192&background=cce5ff&color=004b73" 
-                                alt="{{ $dp[0] }}" 
-                                class="pengajar-avatar"
-                            >
-                            <h3 class="pengajar-name">{{ $dp[0] }}</h3>
-                            <p class="pengajar-specialty">{{ $dp[1] }}</p>
-                            <div class="pengajar-rating">
-                                <svg width="16" height="16" fill="#894d00" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                {{ $dp[2] }}
-                            </div>
-                        </div>
-                        @endforeach
-                    @endforelse
-                </div>
-            </div>
-
-            <button class="carousel-btn carousel-btn-next" aria-label="Next">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-        </div>
-    </div>
-</section>
 
 {{-- CTA Section --}}
 <section class="section">
