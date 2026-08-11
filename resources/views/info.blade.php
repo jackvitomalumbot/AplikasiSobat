@@ -38,81 +38,103 @@
             <p class="info-section-desc">Pencapaian membanggakan dari mahasiswa dan pengajar Sobat Medis.</p>
         </div>
 
-        @if($prestasiUtama->isNotEmpty())
-        {{-- Featured --}}
-        <div class="prestasi-featured-grid mb-xl">
-            @foreach($prestasiUtama as $p)
-            <div class="prestasi-featured-card">
-                @if($p->foto)
-                <div class="prestasi-featured-img-wrap">
-                    <img src="{{ $p->foto_url }}" alt="{{ $p->judul }}" class="prestasi-featured-img" loading="lazy">
+        @if($prestasiUtama->isNotEmpty() || $prestasiMahasiswa->isNotEmpty() || $prestasiPengajar->isNotEmpty())
+
+        <div class="news-layout">
+
+            {{-- ── Featured / Hero Card ── --}}
+            @if($prestasiUtama->isNotEmpty())
+            <div class="news-hero-col">
+                @foreach($prestasiUtama->take(1) as $p)
+                <div class="news-card news-card--hero">
+                    <div class="news-card-img-wrap">
+                        @if($p->foto)
+                        <img src="{{ $p->foto_url }}" alt="{{ $p->judul }}" class="news-card-img" loading="lazy">
+                        @else
+                        <div class="news-card-img-placeholder"><svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity="0.3"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+                        @endif
+                        <span class="news-badge news-badge--featured">Prestasi Utama</span>
+                    </div>
+                    <div class="news-card-body">
+                        <h3 class="news-card-title">{{ $p->judul }}</h3>
+                        @if($p->deskripsi)
+                        <p class="news-card-desc">{{ $p->deskripsi }}</p>
+                        @endif
+                    </div>
                 </div>
-                @endif
-                <div class="prestasi-featured-body">
-                    <span class="prestasi-badge prestasi-badge--featured">⭐ Prestasi Utama</span>
-                    <h3 class="prestasi-featured-title">{{ $p->judul }}</h3>
-                    @if($p->deskripsi)
-                    <p class="prestasi-featured-desc">{{ $p->deskripsi }}</p>
+                @endforeach
+
+                {{-- Extra featured (jika >1) sebagai small cards --}}
+                @foreach($prestasiUtama->skip(1) as $p)
+                <div class="news-card news-card--sm">
+                    @if($p->foto)
+                    <img src="{{ $p->foto_url }}" alt="" class="news-card-sm-img" loading="lazy">
+                    @else
+                    <div class="news-card-sm-img news-card-sm-placeholder"></div>
                     @endif
-                </div>
-            </div>
-            @endforeach
-        </div>
-        @endif
-
-        <div class="prestasi-sub-grid">
-            {{-- Mahasiswa --}}
-            @if($prestasiMahasiswa->isNotEmpty())
-            <div class="prestasi-sub-col">
-                <h3 class="prestasi-sub-title">Prestasi Mahasiswa</h3>
-                <div class="prestasi-list">
-                    @foreach($prestasiMahasiswa as $p)
-                    <div class="prestasi-item">
-                        @if($p->foto)
-                        <img src="{{ $p->foto_url }}" alt="" class="prestasi-item-img" loading="lazy">
-                        @else
-                        <div class="prestasi-item-placeholder"></div>
+                    <div class="news-card-sm-body">
+                        <span class="news-badge news-badge--featured">Prestasi Utama</span>
+                        <p class="news-card-sm-title">{{ $p->judul }}</p>
+                        @if($p->deskripsi)
+                        <p class="news-card-sm-desc">{{ Str::limit($p->deskripsi, 80) }}</p>
                         @endif
-                        <div class="prestasi-item-body">
-                            <p class="prestasi-item-title">{{ $p->judul }}</p>
-                            @if($p->deskripsi)
-                            <p class="prestasi-item-desc">{{ Str::limit($p->deskripsi, 80) }}</p>
-                            @endif
-                        </div>
                     </div>
-                    @endforeach
                 </div>
+                @endforeach
             </div>
             @endif
 
-            {{-- Pengajar --}}
-            @if($prestasiPengajar->isNotEmpty())
-            <div class="prestasi-sub-col">
-                <h3 class="prestasi-sub-title">Prestasi Pengajar</h3>
-                <div class="prestasi-list">
-                    @foreach($prestasiPengajar as $p)
-                    <div class="prestasi-item">
-                        @if($p->foto)
-                        <img src="{{ $p->foto_url }}" alt="" class="prestasi-item-img" loading="lazy">
-                        @else
-                        <div class="prestasi-item-placeholder"></div>
+            {{-- ── Side List (Mahasiswa + Pengajar) ── --}}
+            @if($prestasiMahasiswa->isNotEmpty() || $prestasiPengajar->isNotEmpty())
+            <div class="news-side-col">
+
+                @if($prestasiMahasiswa->isNotEmpty())
+                <p class="news-side-label">Prestasi Mahasiswa</p>
+                @foreach($prestasiMahasiswa as $p)
+                <div class="news-card news-card--sm">
+                    @if($p->foto)
+                    <img src="{{ $p->foto_url }}" alt="" class="news-card-sm-img" loading="lazy">
+                    @else
+                    <div class="news-card-sm-img news-card-sm-placeholder"></div>
+                    @endif
+                    <div class="news-card-sm-body">
+                        <span class="news-badge news-badge--mhs">Mahasiswa</span>
+                        <p class="news-card-sm-title">{{ $p->judul }}</p>
+                        @if($p->deskripsi)
+                        <p class="news-card-sm-desc">{{ Str::limit($p->deskripsi, 80) }}</p>
                         @endif
-                        <div class="prestasi-item-body">
-                            <p class="prestasi-item-title">{{ $p->judul }}</p>
-                            @if($p->deskripsi)
-                            <p class="prestasi-item-desc">{{ Str::limit($p->deskripsi, 80) }}</p>
-                            @endif
-                        </div>
                     </div>
-                    @endforeach
                 </div>
+                @endforeach
+                @endif
+
+                @if($prestasiPengajar->isNotEmpty())
+                <p class="news-side-label" style="margin-top:24px;">Prestasi Pengajar</p>
+                @foreach($prestasiPengajar as $p)
+                <div class="news-card news-card--sm">
+                    @if($p->foto)
+                    <img src="{{ $p->foto_url }}" alt="" class="news-card-sm-img" loading="lazy">
+                    @else
+                    <div class="news-card-sm-img news-card-sm-placeholder"></div>
+                    @endif
+                    <div class="news-card-sm-body">
+                        <span class="news-badge news-badge--pgj">Pengajar</span>
+                        <p class="news-card-sm-title">{{ $p->judul }}</p>
+                        @if($p->deskripsi)
+                        <p class="news-card-sm-desc">{{ Str::limit($p->deskripsi, 80) }}</p>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+                @endif
+
             </div>
             @endif
-        </div>
 
-        @if($prestasiUtama->isEmpty() && $prestasiMahasiswa->isEmpty() && $prestasiPengajar->isEmpty())
+        </div>{{-- .news-layout --}}
+
+        @else
         <div class="info-empty">
-            <span style="font-size:48px;"></span>
             <p>Prestasi akan tampil di sini setelah admin menambahkannya.</p>
         </div>
         @endif
@@ -416,71 +438,153 @@
 .info-empty p { margin: 12px 0 0; }
 
 /* ══════════════════
-   01 PRESTASI
+   01 PRESTASI — News Card Layout
 ══════════════════ */
-.prestasi-featured-grid {
+
+/* Outer 2-col: hero kiri, list kanan */
+.news-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-    justify-content: center;
-    justify-items: center;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: flex-start;
 }
-.prestasi-featured-card {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background: var(--surface, #fff);
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 16px;
+@media (max-width: 900px) { .news-layout { grid-template-columns: 1fr; } }
+
+/* ── Hero (featured) card ── */
+.news-card--hero {
+    border-radius: 20px;
     overflow: hidden;
-    padding: 28px;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    max-width: 480px;
-    transition: box-shadow 0.2s;
+    background: var(--surface, #fff);
+    border: 1px solid rgba(0,0,0,0.07);
+    transition: box-shadow 0.25s;
+    cursor: default;
 }
-.prestasi-featured-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
-.prestasi-featured-img-wrap { width: 100px; height: 100px; border-radius: 16px; overflow: hidden; }
-.prestasi-featured-img { width: 100%; height: 100%; object-fit: cover; }
-.prestasi-featured-body { width: 100%; }
-.prestasi-badge {
-    display: inline-block;
+.news-card--hero:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+
+.news-card-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: var(--surface-container, #f0ede6);
+}
+.news-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.news-card--hero:hover .news-card-img { transform: scale(1.03); }
+.news-card-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Badge over image */
+.news-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.06em;
-    padding: 3px 10px;
+    padding: 4px 12px;
     border-radius: 100px;
-    margin-bottom: 10px;
+    backdrop-filter: blur(6px);
 }
-.prestasi-badge--featured { background: #fff3cd; color: #856404; }
-.prestasi-featured-title { font-size: 18px; font-weight: 700; margin: 0 0 8px; color: var(--on-surface, #1c1c1e); line-height: 1.3; }
-.prestasi-featured-desc { font-size: 14px; color: var(--on-surface-variant, #555); margin: 0; line-height: 1.6; }
+.news-badge--featured { background: rgba(255,243,205,0.92); color: #7a5900; }
+.news-badge--mhs      { background: rgba(209,236,241,0.92); color: #0c5460; }
+.news-badge--pgj      { background: rgba(212,237,218,0.92); color: #155724; }
 
-.prestasi-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-@media (max-width: 768px) { .prestasi-sub-grid { grid-template-columns: 1fr; } }
-.prestasi-sub-title { font-size: 15px; font-weight: 700; margin: 0 0 16px; color: var(--on-surface, #1c1c1e); }
-.prestasi-list { display: flex; flex-direction: column; gap: 12px; }
-.prestasi-item {
+/* Hero body */
+.news-card-body {
+    padding: 24px;
+}
+.news-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--on-surface, #1c1c1e);
+    margin: 0 0 10px;
+    line-height: 1.35;
+}
+.news-card-desc {
+    font-size: 14px;
+    color: var(--on-surface-variant, #555);
+    margin: 0;
+    line-height: 1.7;
+}
+
+/* ── Small news card (horizontal) ── */
+.news-card--sm {
     display: flex;
     gap: 14px;
     align-items: flex-start;
-    padding: 16px;
+    padding: 14px;
     background: var(--surface, #fff);
     border: 1px solid rgba(0,0,0,0.07);
-    border-radius: 12px;
-    transition: box-shadow 0.2s;
+    border-radius: 14px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    margin-bottom: 12px;
 }
-.prestasi-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-.prestasi-item-img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
-.prestasi-item-placeholder {
-    width: 48px; height: 48px; border-radius: 8px;
+.news-card--sm:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    transform: translateX(2px);
+}
+
+/* Thumbnail dalam sm card — tidak abs-positioned */
+.news-card-sm-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
     background: var(--surface-container, #f0ede6);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; flex-shrink: 0;
 }
-.prestasi-item-title { font-size: 14px; font-weight: 600; margin: 0 0 4px; color: var(--on-surface, #1c1c1e); }
-.prestasi-item-desc { font-size: 12px; color: var(--on-surface-variant, #666); margin: 0; line-height: 1.5; }
+.news-card-sm-placeholder { background: var(--surface-container, #f0ede6); }
+
+.news-card-sm-body { flex: 1; min-width: 0; }
+/* Badge dalam sm card — posisi relatif bukan absolute */
+.news-card--sm .news-badge {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: inline-block;
+    margin-bottom: 6px;
+    backdrop-filter: none;
+    font-size: 10px;
+}
+.news-card-sm-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--on-surface, #1c1c1e);
+    margin: 0 0 4px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.news-card-sm-desc {
+    font-size: 12px;
+    color: var(--on-surface-variant, #666);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Section label di atas list */
+.news-side-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--on-surface-variant, #888);
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
 .mb-xl { margin-bottom: 32px; }
 
 /* ══════════════════
