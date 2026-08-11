@@ -5,28 +5,20 @@
 @section('content')
 
 {{-- ═══════════════════════════════════════
-     PAGE HEADER — 3-column with 3D logos
+     PAGE HEADER — 2-column like homepage
 ═══════════════════════════════════════ --}}
 <section class="info-page-hero" id="infoPageHero">
     <div class="info-hero-inner">
 
-        {{-- Left 3D Logo --}}
-        <div class="info-hero-logo info-hero-logo--left" aria-hidden="true">
-            <div class="info-hero-glow"></div>
-            <canvas id="infoLogoCanvasLeft"
-                data-logo-url="{{ asset('images/logo.png') }}"
-                class="info-hero-canvas"></canvas>
-        </div>
-
-        {{-- Center Text --}}
+        {{-- LEFT: Text --}}
         <div class="info-hero-content" id="infoHeroContent">
             <p class="info-eyebrow">Pusat Informasi</p>
             <h1 class="info-page-title">Info Sobat Medis</h1>
             <p class="info-page-subtitle">Prestasi terbaru, berita kesehatan dunia, kelas baru, dan perkembangan komunitas kami.</p>
         </div>
 
-        {{-- Right 3D Logo --}}
-        <div class="info-hero-logo info-hero-logo--right" aria-hidden="true">
+        {{-- RIGHT: 3D Logo --}}
+        <div class="info-hero-logo" aria-hidden="true">
             <div class="info-hero-glow"></div>
             <canvas id="infoLogoCanvasRight"
                 data-logo-url="{{ asset('images/logo.png') }}"
@@ -277,41 +269,41 @@
     overflow: hidden;
 }
 
-/* 3-column inner layout */
+/* 2-column inner — teks kiri, logo kanan */
 .info-hero-inner {
     display: grid;
-    grid-template-columns: 220px 1fr 220px;
+    grid-template-columns: 1fr 360px;
     align-items: center;
-    min-height: 340px;
-    max-width: 1280px;
+    min-height: 380px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 40px;
+    gap: 40px;
 }
 
-/* Center text */
+/* LEFT: text — rata kiri */
 .info-hero-content {
-    text-align: center;
-    padding: 64px 24px;
+    text-align: left;
+    padding: 72px 0;
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateX(-16px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .info-hero-content.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
-/* Side 3D logo containers */
+/* RIGHT: 3D logo */
 .info-hero-logo {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 320px;
+    height: 320px;
+    justify-self: end;
     opacity: 0;
     transition: opacity 1s 0.2s ease;
 }
 .info-hero-logo.is-visible { opacity: 1; }
-.info-hero-logo--left  { justify-self: start; }
-.info-hero-logo--right { justify-self: end; }
 
 .info-hero-glow {
     position: absolute;
@@ -330,7 +322,7 @@
     border-radius: 50%;
 }
 
-/* Eyebrow & title */
+/* Eyebrow & title — rata kiri */
 .info-eyebrow {
     font-size: 12px;
     font-weight: 700;
@@ -350,29 +342,31 @@
 .info-page-subtitle {
     font-size: 16px;
     color: var(--on-surface-variant, #555);
-    max-width: 480px;
-    margin: 0 auto;
+    max-width: 460px;
+    margin: 0;
     line-height: 1.7;
 }
 
 /* Tablet */
 @media (max-width: 900px) {
     .info-hero-inner {
-        grid-template-columns: 140px 1fr 140px;
-        padding: 0 16px;
+        grid-template-columns: 1fr 260px;
+        padding: 0 24px;
+        gap: 24px;
     }
-    .info-hero-logo { width: 130px; height: 130px; }
+    .info-hero-logo { width: 240px; height: 240px; }
 }
 
-/* Mobile — hide side logos, full width text */
+/* Mobile — stack, hide logo */
 @media (max-width: 600px) {
     .info-hero-inner {
         grid-template-columns: 1fr;
-        justify-items: center;
         min-height: unset;
+        padding: 0 20px;
     }
     .info-hero-logo { display: none; }
-    .info-hero-content { padding: 48px 16px; }
+    .info-hero-content { padding: 48px 0; text-align: center; }
+    .info-page-subtitle { margin: 0 auto; }
 }
 
 /* ── Section base ── */
