@@ -171,16 +171,7 @@
             <div class="pu-profile-identity">
                 <h2 class="pu-profile-name" id="puProfileName"></h2>
                 <p class="pu-profile-spesialisasi" id="puProfileSpesialisasi"></p>
-                <div class="pu-profile-meta">
-                    <div class="pu-profile-rating" id="puProfileRating">
-                        <svg width="16" height="16" fill="#C58A18" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span id="puProfileRatingVal"></span>
-                    </div>
-                    <div class="pu-profile-exp" id="puProfileExp">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                        <span id="puProfileExpVal"></span>
-                    </div>
-                </div>
+
             </div>
         </div>
 
@@ -197,22 +188,7 @@
                 <div class="pu-profile-keahlian" id="puProfileKeahlian"></div>
             </div>
 
-            <div class="pu-profile-stats">
-                <div class="pu-stat-item">
-                    <span class="pu-stat-value" id="puStatMahasiswa"></span>
-                    <span class="pu-stat-label">Mahasiswa</span>
-                </div>
-                <div class="pu-stat-divider"></div>
-                <div class="pu-stat-item">
-                    <span class="pu-stat-value" id="puStatKelas"></span>
-                    <span class="pu-stat-label">Kelas</span>
-                </div>
-                <div class="pu-stat-divider"></div>
-                <div class="pu-stat-item">
-                    <span class="pu-stat-value" id="puStatRating"></span>
-                    <span class="pu-stat-label">Rating</span>
-                </div>
-            </div>
+
         </div>
 
         <div class="pu-profile-footer">
@@ -239,11 +215,7 @@
             </div>
             <h3 class="pu-bs-name" id="puBsName"></h3>
             <p class="pu-bs-spesialisasi" id="puBsSpesialisasi"></p>
-            <div class="pu-bs-rating">
-                <svg width="14" height="14" fill="#C58A18" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <span id="puBsRating"></span>
-                <span class="pu-bs-exp" id="puBsExp"></span>
-            </div>
+
 
             <div class="pu-bs-motivasi" id="puBsMotivasi"></div>
 
@@ -257,20 +229,7 @@
                 <div class="pu-bs-keahlian" id="puBsKeahlian"></div>
             </div>
 
-            <div class="pu-bs-stats">
-                <div class="pu-bs-stat">
-                    <span class="pu-bs-stat-val" id="puBsStatM"></span>
-                    <span class="pu-bs-stat-lbl">Mahasiswa</span>
-                </div>
-                <div class="pu-bs-stat">
-                    <span class="pu-bs-stat-val" id="puBsStatK"></span>
-                    <span class="pu-bs-stat-lbl">Kelas</span>
-                </div>
-                <div class="pu-bs-stat">
-                    <span class="pu-bs-stat-val" id="puBsStatR"></span>
-                    <span class="pu-bs-stat-lbl">Rating</span>
-                </div>
-            </div>
+
 
             <a href="#" class="btn btn-primary btn-block" id="puBsLihatKelas" style="margin-top: 8px;">
                 Lihat Kelas
