@@ -20,12 +20,9 @@
 ═══════════════════════════════════════ --}}
 <section class="info-section" id="prestasi">
     <div class="info-container">
-        <div class="info-section-header">
-            <span class="info-section-num">01</span>
-            <div>
-                <h2 class="info-section-title">Prestasi Terbaru</h2>
-                <p class="info-section-desc">Pencapaian membanggakan dari mahasiswa dan pengajar Sobat Medis.</p>
-            </div>
+        <div class="info-section-header info-section-header--center">
+            <h2 class="info-section-title">Prestasi Terbaru</h2>
+            <p class="info-section-desc">Pencapaian membanggakan dari mahasiswa dan pengajar Sobat Medis.</p>
         </div>
 
         @if($prestasiUtama->isNotEmpty())
@@ -114,12 +111,9 @@
 ═══════════════════════════════════════ --}}
 <section class="info-section info-section--alt" id="who-news">
     <div class="info-container">
-        <div class="info-section-header">
-            <span class="info-section-num">02</span>
-            <div>
-                <h2 class="info-section-title">🌎 WHO Latest News</h2>
-                <p class="info-section-desc">Berita kesehatan terkini dari World Health Organization. Diperbarui setiap 24 jam.</p>
-            </div>
+        <div class="info-section-header info-section-header--center">
+            <h2 class="info-section-title">WHO Latest News</h2>
+            <p class="info-section-desc">Berita kesehatan terkini dari World Health Organization. Diperbarui setiap 24 jam.</p>
         </div>
 
         @if(!empty($whoNews))
@@ -156,12 +150,9 @@
 ═══════════════════════════════════════ --}}
 <section class="info-section" id="update">
     <div class="info-container">
-        <div class="info-section-header">
-            <span class="info-section-num">03</span>
-            <div>
-                <h2 class="info-section-title">Sobat Medis Update</h2>
-                <p class="info-section-desc">Kelas-kelas terbaru yang baru dibuka oleh pengajar kami.</p>
-            </div>
+        <div class="info-section-header info-section-header--center">
+            <h2 class="info-section-title">Sobat Medis Update</h2>
+            <p class="info-section-desc">Kelas-kelas terbaru yang baru dibuka oleh pengajar kami.</p>
         </div>
 
         @if($kelasBarru->isNotEmpty())
@@ -208,27 +199,21 @@
 ═══════════════════════════════════════ --}}
 <section class="info-section info-section--dark" id="komunitas">
     <div class="info-container">
-        <div class="info-section-header info-section-header--light">
-            <span class="info-section-num info-section-num--light">04</span>
-            <div>
-                <h2 class="info-section-title info-section-title--light">❤️ Community Highlight</h2>
-                <p class="info-section-desc info-section-desc--light">Bergabung dengan ribuan pelajar yang sudah bersama Sobat Medis.</p>
-            </div>
+        <div class="info-section-header info-section-header--center info-section-header--light">
+            <h2 class="info-section-title info-section-title--light">Community Highlight</h2>
+            <p class="info-section-desc info-section-desc--light">Bergabung dengan ribuan pelajar yang sudah bersama Sobat Medis.</p>
         </div>
 
         <div class="community-stats">
             <div class="stat-card">
-                <div class="stat-icon"></div>
                 <div class="stat-number" data-target="{{ $totalMahasiswa }}">0</div>
                 <div class="stat-label">Mahasiswa Terdaftar</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon"></div>
                 <div class="stat-number" data-target="{{ $totalPengajar }}">0</div>
                 <div class="stat-label">Pengajar Profesional</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon"></div>
                 <div class="stat-number" data-target="{{ $totalKelas }}">0</div>
                 <div class="stat-label">Kelas Aktif</div>
             </div>
@@ -244,12 +229,11 @@
         <p class="info-eyebrow">Bergabung Sekarang</p>
         <h2 class="info-cta-title">Terus berkembang bersama<br>Sobat Medis</h2>
         <p class="info-cta-desc">Mulai perjalanan belajarmu hari ini bersama pengajar terbaik di bidang kedokteran.</p>
-        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:var(--space-xl);">
+        <div style="display:flex;justify-content:center;margin-top:var(--space-xl);">
             <a href="{{ url('/register') }}" class="btn-hero-primary">
                 <span>MULAI BELAJAR</span>
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a href="{{ url('/bantuan') }}" class="btn btn-outline btn-lg">Hubungi Kami</a>
         </div>
     </div>
 </section>
@@ -310,6 +294,14 @@
     gap: 20px;
     margin-bottom: 48px;
 }
+/* Centered variant — used by all sections now */
+.info-section-header--center {
+    display: block;
+    text-align: center;
+    margin-bottom: 48px;
+}
+.info-section-header--center .info-section-title { margin-left: auto; margin-right: auto; }
+.info-section-header--center .info-section-desc  { margin-left: auto; margin-right: auto; max-width: 560px; }
 .info-section-num {
     flex-shrink: 0;
     font-size: 13px;
@@ -507,21 +499,23 @@
 @media (max-width: 600px) { .community-stats { grid-template-columns: 1fr; } }
 .stat-card {
     text-align: center;
-    padding: 40px 24px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px;
+    padding: 40px 16px;
 }
-.stat-icon { font-size: 36px; margin-bottom: 16px; }
 .stat-number {
-    font-size: clamp(40px, 6vw, 64px);
+    font-size: clamp(48px, 7vw, 72px);
     font-weight: 800;
     line-height: 1;
     color: #fff;
     letter-spacing: -0.04em;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
-.stat-label { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 500; }
+.stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
 
 /* ══════════════════
    05 CTA
