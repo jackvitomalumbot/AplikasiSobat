@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\PengajarUnggulan;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $featuredPengajar = User::where('role', 'pengajar')
-            ->with('pengajarDetail')
+        $featuredPengajar = PengajarUnggulan::where('aktif', true)
+            ->orderBy('urutan')
+            ->orderBy('id')
             ->take(3)
             ->get();
 
-        $allPengajar = User::where('role', 'pengajar')
-            ->with('pengajarDetail')
-            ->get();
-
-        return view('welcome', compact('featuredPengajar', 'allPengajar'));
+        return view('welcome', compact('featuredPengajar'));
     }
 }
+

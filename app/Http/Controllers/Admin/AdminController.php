@@ -7,10 +7,12 @@ use App\Models\Enrollment;
 use App\Models\Kelas;
 use App\Models\MahasiswaDetail;
 use App\Models\PengajarDetail;
+use App\Models\PengajarUnggulan;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -238,5 +240,90 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', "Pembayaran untuk \"{$enrollment->kelas->nama_kelas}\" oleh {$enrollment->mahasiswa->nama} ditolak.");
+    }
+
+    /* ─── Pengajar Unggulan (Landing Page) ─── */
+
+    public function pengajarUnggulan()
+    {
+        $list = PengajarUnggulan::orderBy('urutan')->orderBy('id')->get();
+        return view('admin.pengajar-unggulan', compact('list'));
+    }
+
+    public function storePengajarUnggulan(Request $request)
+    {
+        $data = $request->validate([
+            'nama'         => 'required|string|max:255',
+            'spesialisasi' => 'nullable|string|max:255',
+            'foto_url'     => 'nullable|url|max:500',
+            'foto_file'    => 'nullable|image|max:2048',
+            'deskripsi'    => 'nullable|string|max:1000',
+            'keahlian'     => 'nullable|string|max:500',
+            'motivasi'     => 'nullable|string|max:300',
+            'urutan'       => 'nullable|integer|min:0',
+            'aktif'        => 'nullable|boolean',
+        ]);
+
+        $foto = null;
+        if ($request->hasFile('foto_file')) {
+            $foto = $request->file('foto_file')->store('pengajar-unggulan', 'public');
+            $foto = 'storage/' . $foto;
+        } elseif ($request->filled('foto_url')) {
+            $foto = $request->foto_url;
+        }
+
+        PengajarUnggulan::create([
+            'nama'         => $data['nama'],
+            'spesialisasi' => $data['spesialisasi'] ?? null,
+            'foto'         => $foto,
+            'deskripsi'    => $data['deskripsi'] ?? null,
+            'keahlian'     => $data['keahlian'] ?? null,
+            'motivasi'     => $data['motivasi'] ?? null,
+            'urutan'       => $data['urutan'] ?? 0,
+            'aktif'        => $request->boolean('aktif', true),
+        ]);
+
+        return back()->with('success', 'Pengajar Unggulan berhasil ditambahkan.');
+    }
+
+    public function updatePengajarUnggulan(Request $request, PengajarUnggulan $pengajarUnggulan)
+    {
+        $data = $request->validate([
+            'nama'         => 'required|string|max:255',
+            'spesialisasi' => 'nullable|string|max:255',
+            'foto_url'     => 'nullable|url|max:500',
+            'foto_file'    => 'nullable|image|max:2048',
+            'deskripsi'    => 'nullable|string|max:1000',
+            'keahlian'     => 'nullable|string|max:500',
+            'motivasi'     => 'nullable|string|max:300',
+            'urutan'       => 'nullable|integer|min:0',
+            'aktif'        => 'nullable|boolean',
+        ]);
+
+        $foto = $pengajarUnggulan->foto;
+        if ($request->hasFile('foto_file')) {
+            $foto = 'storage/' . $request->file('foto_file')->store('pengajar-unggulan', 'public');
+        } elseif ($request->filled('foto_url')) {
+            $foto = $request->foto_url;
+        }
+
+        $pengajarUnggulan->update([
+            'nama'         => $data['nama'],
+            'spesialisasi' => $data['spesialisasi'] ?? null,
+            'foto'         => $foto,
+            'deskripsi'    => $data['deskripsi'] ?? null,
+            'keahlian'     => $data['keahlian'] ?? null,
+            'motivasi'     => $data['motivasi'] ?? null,
+            'urutan'       => $data['urutan'] ?? 0,
+            'aktif'        => $request->boolean('aktif', true),
+        ]);
+
+        return back()->with('success', 'Pengajar Unggulan berhasil diperbarui.');
+    }
+
+    public function destroyPengajarUnggulan(PengajarUnggulan $pengajarUnggulan)
+    {
+        $pengajarUnggulan->delete();
+        return back()->with('success', 'Pengajar Unggulan berhasil dihapus.');
     }
 }

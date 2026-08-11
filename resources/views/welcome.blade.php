@@ -34,70 +34,30 @@
         {{-- Card Grid --}}
         <div class="pu-grid animate-on-scroll" style="opacity: 0;" id="puGrid">
 
-            @php
-                $pengajarData = [];
-                $motivasi = [
-                    '"Dokter terbaik adalah yang terus belajar sepanjang hayat."',
-                    '"Setiap pasien adalah pelajaran berharga yang mengubah seorang dokter."',
-                    '"Ilmu tanpa empati hanyalah pengetahuan. Empati tanpa ilmu hanyalah niat."',
-                ];
-                $keahlianData = [
-                    ['Kehamilan', 'Persalinan', 'Kesehatan Reproduksi', 'USG Obstetri'],
-                    ['EKG', 'Ekokardiografi', 'Rehabilitasi Jantung', 'Hipertensi'],
-                    ['Dermatitis', 'Akne', 'Infeksi Kulit', 'Kosmetik Medis'],
-                ];
-                $deskripsiData = [
-                    'Dokter spesialis dengan dedikasi tinggi dalam pelayanan kesehatan ibu dan anak. Berpengalaman dalam penanganan komplikasi kehamilan, persalinan normal dan operatif, serta konsultasi kesehatan reproduksi wanita.',
-                    'Spesialis jantung yang berfokus pada pencegahan dan pengobatan penyakit kardiovaskular. Aktif dalam penelitian klinis dan pengembangan protokol penanganan pasien jantung kritis.',
-                    'Dokter spesialis kulit dan kelamin dengan keahlian dalam penanganan penyakit kulit infeksi, alergi, dan estetik. Menggabungkan pendekatan ilmiah dengan sentuhan humanis dalam setiap layanan.',
-                ];
-            @endphp
-
-            @forelse($featuredPengajar ?? [] as $idx => $pengajar)
-                @php
-                    $nama = $pengajar->nama;
-                    $spesialisasi = $pengajar->pengajarDetail->spesialisasi ?? 'Pengajar Medis';
-                    $rating = number_format($pengajar->rating ?? 4.8, 1);
-                    $foto = $pengajar->foto_profile
-                        ? asset($pengajar->foto_profile)
-                        : 'https://ui-avatars.com/api/?name=' . urlencode($nama) . '&size=256&background=e9e2cc&color=635e4d';
-                    $keahlian = $keahlianData[$idx] ?? ['Kedokteran Umum', 'Pelayanan Pasien'];
-                    $deskripsi = $deskripsiData[$idx] ?? 'Pengajar berpengalaman di bidang kedokteran dengan dedikasi tinggi dalam mendidik generasi medis masa depan.';
-                    $motivasiCard = $motivasi[$idx] ?? '"Belajarlah dari yang terbaik."';
-                    $jumlahMahasiswa = [2300, 1850, 2100][$idx] ?? 1500;
-                    $jumlahKelas = [18, 12, 15][$idx] ?? 10;
-                    $pengalaman = [12, 9, 11][$idx] ?? 8;
-                @endphp
-
+            @forelse($featuredPengajar ?? [] as $pengajar)
                 <div class="pu-card"
                     tabindex="0"
                     role="button"
-                    aria-label="Lihat profil {{ $nama }}"
-                    data-nama="{{ $nama }}"
-                    data-spesialisasi="{{ $spesialisasi }}"
-                    data-rating="{{ $rating }}"
-                    data-foto="{{ $foto }}"
-                    data-keahlian="{{ implode('|', $keahlian) }}"
-                    data-deskripsi="{{ $deskripsi }}"
-                    data-motivasi="{{ $motivasiCard }}"
-                    data-mahasiswa="{{ number_format($jumlahMahasiswa) }}+"
-                    data-kelas="{{ $jumlahKelas }}"
-                    data-pengalaman="{{ $pengalaman }}+ Tahun"
+                    aria-label="Lihat profil {{ $pengajar->nama }}"
+                    data-nama="{{ $pengajar->nama }}"
+                    data-spesialisasi="{{ $pengajar->spesialisasi ?? 'Pengajar Medis' }}"
+                    data-foto="{{ $pengajar->foto_url }}"
+                    data-keahlian="{{ $pengajar->keahlian ?? '' }}"
+                    data-deskripsi="{{ $pengajar->deskripsi ?? '' }}"
+                    data-motivasi="{{ $pengajar->motivasi ?? '' }}"
                     data-kelas-url="{{ url('/kelas') }}"
                     id="puCard{{ $loop->index }}">
 
                     <div class="pu-card-inner">
                         <div class="pu-avatar-wrap">
-                            <img src="{{ $foto }}" alt="{{ $nama }}" class="pu-avatar" loading="lazy"
-                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($nama) }}&size=256&background=e9e2cc&color=635e4d'">
+                            <img src="{{ $pengajar->foto_url }}"
+                                alt="{{ $pengajar->nama }}"
+                                class="pu-avatar" loading="lazy"
+                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($pengajar->nama) }}&size=256&background=e9e2cc&color=635e4d'">
                             <div class="pu-avatar-ring"></div>
                         </div>
-                        <h3 class="pu-name">{{ $nama }}</h3>
-                        <p class="pu-specialty">{{ $spesialisasi }}</p>
-                        <div class="pu-rating">
-                            <svg width="14" height="14" fill="#C58A18" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <span>{{ $rating }}</span>
-                        </div>
+                        <h3 class="pu-name">{{ $pengajar->nama }}</h3>
+                        <p class="pu-specialty">{{ $pengajar->spesialisasi ?? 'Pengajar Medis' }}</p>
                         <div class="pu-card-hint">
                             <span>Lihat Profil</span>
                             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -108,9 +68,9 @@
             @empty
                 @php
                     $dummyPengajar = [
-                        ['nama' => 'Dr. Nesya Cendranita', 'spesialisasi' => 'Obstetri & Ginekologi / Kandungan', 'rating' => '4.8', 'mahasiswa' => '2.300+', 'kelas' => 18, 'pengalaman' => '12+ Tahun', 'deskripsi' => 'Dokter spesialis obstetri dan ginekologi dengan pengalaman luas dalam pelayanan kesehatan ibu, kehamilan, persalinan, dan kesehatan reproduksi wanita. Berkomitmen mendidik generasi dokter masa depan.', 'keahlian' => 'Kehamilan|Persalinan|Kesehatan Reproduksi|USG Obstetri', 'motivasi' => '"Setiap kehidupan baru yang lahir adalah bukti nyata dari ilmu dan kasih sayang."', 'bg' => 'dce8f0&color=1a4a6e'],
-                        ['nama' => 'Dr. Elizabeth', 'spesialisasi' => 'Jantung', 'rating' => '4.8', 'mahasiswa' => '1.850+', 'kelas' => 12, 'pengalaman' => '9+ Tahun', 'deskripsi' => 'Spesialis jantung berpengalaman yang berfokus pada pencegahan dan pengobatan penyakit kardiovaskular. Aktif dalam penelitian klinis dan pengembangan protokol penanganan pasien jantung kritis.', 'keahlian' => 'EKG|Ekokardiografi|Rehabilitasi Jantung|Hipertensi', 'motivasi' => '"Jantung yang sehat adalah fondasi kehidupan yang bermakna."', 'bg' => 'f0dce0&color=6e1a2a'],
-                        ['nama' => 'Dr. Timotius Andrijun', 'spesialisasi' => 'Kulit & Kelamin', 'rating' => '4.8', 'mahasiswa' => '2.100+', 'kelas' => 15, 'pengalaman' => '11+ Tahun', 'deskripsi' => 'Dokter spesialis kulit dan kelamin dengan keahlian dalam penanganan penyakit kulit infeksi, alergi, dan estetik. Menggabungkan pendekatan ilmiah dengan sentuhan humanis.', 'keahlian' => 'Dermatitis|Akne|Infeksi Kulit|Kosmetik Medis', 'motivasi' => '"Kulit adalah cermin kesehatan, dan ilmu adalah kunci untuk membacanya."', 'bg' => 'e0f0dc&color=1a4a1e'],
+                        ['nama' => 'Dr. Nesya Cendranita', 'spesialisasi' => 'Obstetri & Ginekologi / Kandungan', 'deskripsi' => 'Dokter spesialis obstetri dan ginekologi dengan pengalaman luas dalam pelayanan kesehatan ibu, kehamilan, persalinan, dan kesehatan reproduksi wanita.', 'keahlian' => 'Kehamilan|Persalinan|Kesehatan Reproduksi|USG Obstetri', 'motivasi' => '"Setiap kehidupan baru yang lahir adalah bukti nyata dari ilmu dan kasih sayang."', 'bg' => 'dce8f0&color=1a4a6e'],
+                        ['nama' => 'Dr. Elizabeth', 'spesialisasi' => 'Jantung', 'deskripsi' => 'Spesialis jantung berpengalaman yang berfokus pada pencegahan dan pengobatan penyakit kardiovaskular.', 'keahlian' => 'EKG|Ekokardiografi|Rehabilitasi Jantung|Hipertensi', 'motivasi' => '"Jantung yang sehat adalah fondasi kehidupan yang bermakna."', 'bg' => 'f0dce0&color=6e1a2a'],
+                        ['nama' => 'Dr. Timotius Andrijun', 'spesialisasi' => 'Kulit & Kelamin', 'deskripsi' => 'Dokter spesialis kulit dan kelamin dengan keahlian dalam penanganan penyakit kulit infeksi, alergi, dan estetik.', 'keahlian' => 'Dermatitis|Akne|Infeksi Kulit|Kosmetik Medis', 'motivasi' => '"Kulit adalah cermin kesehatan, dan ilmu adalah kunci untuk membacanya."', 'bg' => 'e0f0dc&color=1a4a1e'],
                     ];
                 @endphp
                 @foreach($dummyPengajar as $i => $dp)
@@ -120,14 +80,10 @@
                     aria-label="Lihat profil {{ $dp['nama'] }}"
                     data-nama="{{ $dp['nama'] }}"
                     data-spesialisasi="{{ $dp['spesialisasi'] }}"
-                    data-rating="{{ $dp['rating'] }}"
                     data-foto="https://ui-avatars.com/api/?name={{ urlencode($dp['nama']) }}&size=256&background={{ $dp['bg'] }}"
                     data-keahlian="{{ $dp['keahlian'] }}"
                     data-deskripsi="{{ $dp['deskripsi'] }}"
                     data-motivasi="{{ $dp['motivasi'] }}"
-                    data-mahasiswa="{{ $dp['mahasiswa'] }}"
-                    data-kelas="{{ $dp['kelas'] }}"
-                    data-pengalaman="{{ $dp['pengalaman'] }}"
                     data-kelas-url="{{ url('/kelas') }}"
                     id="puCard{{ $i }}">
 
@@ -139,10 +95,6 @@
                         </div>
                         <h3 class="pu-name">{{ $dp['nama'] }}</h3>
                         <p class="pu-specialty">{{ $dp['spesialisasi'] }}</p>
-                        <div class="pu-rating">
-                            <svg width="14" height="14" fill="#C58A18" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                            <span>{{ $dp['rating'] }}</span>
-                        </div>
                         <div class="pu-card-hint">
                             <span>Lihat Profil</span>
                             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -152,6 +104,7 @@
                 @endforeach
             @endforelse
         </div>
+
     </div>
 </section>
 
